@@ -1,0 +1,3 @@
+include ':slidingmenu'
+include ':app'
+rootProject.name = "Parking"

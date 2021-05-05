@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nsdk_route_sort_panel_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/nsdk_layout_route_sort_background"
+    android:focusableInTouchMode="true"
+    android:longClickable="true">
+
+    <TextView
+        android:id="@+id/nsdk_route_sort_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/nsdk_route_sort_setting_title_icon"
+        android:drawablePadding="5dp"
+        android:text="路线偏好"
+        android:includeFontPadding="false"
+        android:gravity="center_vertical"
+        android:textColor="#333333"
+        android:textSize="18sp"/>
+
+    <View
+        android:id="@+id/nsdk_route_sort_h1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/nsdk_route_sort_title_tv"
+        android:background="#dddddd"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/nsdk_route_sort_gv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:layout_below="@id/nsdk_route_sort_h1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="none"/>
+
+    <View
+        android:id="@+id/nsdk_route_sort_h3"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/nsdk_route_sort_gv"
+        android:background="#dddddd"/>
+</RelativeLayout>

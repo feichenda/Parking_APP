@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/collection" android:icon="@mipmap/collection" android:title="收藏"></item>
+    <item android:id="@+id/form" android:icon="@mipmap/form" android:title="订单"></item>
+    <item android:id="@+id/setting" android:icon="@mipmap/setting" android:title="设置"></item>
+    <item android:id="@+id/logout" android:icon="@mipmap/logout" android:title="退出"></item>
+</menu>

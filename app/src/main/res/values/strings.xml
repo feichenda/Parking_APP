@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Parking</string>
+    <string name="user_hint">请输入账号</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="repassword_hint">请再次输入密码</string>
+    <string name="find_password">找回密码</string>
+    <string name="sure">确认</string>
+    <string name="btn_scan_local_pic">从相册选取二维码</string>
+    <string name="btn_open_flashlight_text">打开手电筒</string>
+    <string name="btn_close_flashlight_text">关闭手电筒</string>
+    <string name="scan_fail">扫描失败!</string>
+    <string name="error_missing_h5_pay_url">Missing URL to load. Please configure in PayDemoActivity.h5Pay()</string>
+    <string name="error">Error</string>
+    <string name="confirm">Confirm</string>
+    <string name="pay_success">Payment success:</string>
+    <string name="pay_failed">Payment failed:</string>
+    <string name="error_missing_appid_rsa_private">Error: Missing \"APPID\" or \"RSA_PRIVATE\" in PayDemoActivity.</string>
+    <string name="error_auth_missing_partner_appid_rsa_private_target_id">Error: Missing \"PARTNER\", \"APP_ID\", \"RSA_PRIVATE\", or \"TARGET_ID\" in PayDemoActivity.</string>
+    <string name="alipay_sdk_version_is">"Alipay SDK version: "</string>
+</resources>

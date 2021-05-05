@@ -1,0 +1,132 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item><!--获得焦点时的颜色-->
+<!--        <item name="android:windowLightStatusBar">true</item>-->
+
+        <item name="md_color_button_text">@android:color/black</item>
+<!--        <item name="md_ripple_color">@color/color_2196F3</item>-->
+<!--        <item name="md_color_widget">@color/color_2196F3</item>-->
+    </style>
+
+    <style name="photodialogstyle">
+        <!--设置dialog的背景-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--设置Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--设置无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--设置窗口内容不覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--设置动画，在这里使用让它继承系统的Animation.Dialog-->
+        <item name="android:windowAnimationStyle">@style/photo_dialog_animstyle</item>
+        <!--背景是否模糊显示-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 全屏 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="SelectSpaceDialog" parent="@android:style/Theme.Dialog">
+        <!--设置dialog的背景-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--设置Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--设置无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--设置窗口内容不覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--背景是否模糊显示-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="photo_dialog_animstyle">
+        <item name="android:windowEnterAnimation">@anim/photo_dialog_show_anim</item>
+        <item name="android:windowExitAnimation">@anim/photo_dialog_unshow_anim</item>
+    </style>
+
+    <style name="optiondialogstyle">
+        <!--设置dialog的背景-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--设置Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--设置无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--设置窗口内容不覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--设置动画，在这里使用让它继承系统的Animation.Dialog-->
+        <item name="android:windowAnimationStyle">@style/option_dialog_animstyle</item>
+        <!--背景是否模糊显示-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 全屏 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="option_dialog_animstyle">
+        <item name="android:windowEnterAnimation">@anim/option_dialog_show_anim</item>
+        <item name="android:windowExitAnimation">@anim/option_dialog_unshow_anim</item>
+    </style>
+
+    <style name="orderdialogstyle">
+        <!--设置dialog的背景-->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!--设置Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--设置无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--设置窗口内容不覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--设置动画，在这里使用让它继承系统的Animation.Dialog-->
+        <item name="android:windowAnimationStyle">@style/photo_dialog_animstyle</item>
+        <!--背景是否模糊显示-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 全屏 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!--名字自定义-->
+<!--    <style name="CheckBoxTheme">-->
+<!--        <item name="colorAccent">@color/color_2196F3</item>&lt;!&ndash;选中颜色&ndash;&gt;-->
+<!--&lt;!&ndash;        <item name="colorControlNormal">@color/colorPrimary</item>&lt;!&ndash;未选中颜色&ndash;&gt;&ndash;&gt;-->
+<!--    </style>-->
+
+    <style name="main_menu_animstyle">
+        <item name="android:windowEnterAnimation">@anim/anim_enter_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/anim_exit_from_bottom</item>
+    </style>
+
+    <!-- 中间弹出框 -->
+    <style name="dialog_center" parent="Theme.AppCompat.Dialog.Alert">
+        <!-- 去黑边 -->
+        <item name="android:windowFrame">@null</item>
+        <item name="android:screenOrientation">portrait</item>
+        <!-- 设置是否可滑动 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 背景 -->
+        <!-- 窗口背景 @color/touming的值为：#00000000 ， style中不能直接引用16进制，感谢评论区的老铁提醒-->
+        <item name="android:windowBackground">@color/touming</item>
+        <!-- 是否变暗 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 点击空白部分activity不消失 -->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+</resources>

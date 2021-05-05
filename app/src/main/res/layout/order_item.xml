@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@mipmap/bill"
+        android:layout_centerVertical="true"
+        android:id="@+id/targe" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/targe"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商家名"
+            android:ellipsize="end"
+            android:lines="1"
+            android:lineHeight="1.2dp"
+            android:textColor="@android:color/black"
+            android:id="@+id/merchant"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="交易时间"
+            android:lineHeight="1.2dp"
+
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_below="@+id/merchant"
+            android:id="@+id/ordertime" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金额"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/price" />
+    </RelativeLayout>
+
+</RelativeLayout>

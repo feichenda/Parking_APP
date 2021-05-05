@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialogtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@drawable/white_top_radius"
+        android:paddingTop="15dip"
+        android:paddingBottom="15dip"
+        android:text="标题"/>
+
+    <View
+        android:id="@+id/firstview"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_f2f2f2" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstoption"
+        android:background="@android:color/white"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:text="选项一"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_f2f2f2" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/secondtoption"
+        android:background="@drawable/white_bom_radius"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:text="选项二"/>
+
+    <Button
+        android:id="@+id/cancle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_radius"
+        android:paddingBottom="10dip"
+        android:paddingTop="10dip"
+        android:text="取消" />
+
+
+</LinearLayout>
