@@ -1,4 +1,0 @@
-39.108.86.240
-administrator
-rm-parking.mysql.rds.aliyuncs.com
-parking_admin
