@@ -66,7 +66,6 @@ dependencies {
     implementation files('libs\\onsdk_all.aar')
     implementation files('libs\\alipaysdk-15.8.02.210308182128.aar')
 
-
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -93,7 +92,6 @@ dependencies {
     //图片选择框架
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
 
-
     //集成retrofit2 RxJava3 RxAndroid Gson
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
@@ -119,12 +117,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:input:3.3.0'
     implementation 'com.afollestad.material-dialogs:datetime:3.3.0'
     implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
-//    implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
 
     //Google
     implementation 'com.google.android.material:material:1.0.0'
-
-    implementation 'com.github.Giftedcat:DynamicPublishing:1.0.0'
 
     //圆形头像
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -142,15 +137,6 @@ dependencies {
     //车牌输入
     implementation 'com.github.winterPei:LicensePlateUtil:v1.0'
 
-    //车牌识别
-//    def camerax_version = '1.0.0-beta04'
-//    implementation "androidx.camera:camera-core:$camerax_version"
-//    implementation "androidx.camera:camera-camera2:$camerax_version"
-//    implementation "androidx.camera:camera-lifecycle:$camerax_version"
-//    implementation 'androidx.camera:camera-view:1.0.0-alpha11'
-//    implementation(name: 'ocr', ext: 'aar')
-//    implementation(name: 'openCVLibrary346', ext: 'aar')
-
     //GIF动图
     implementation "com.airbnb.android:lottie:3.7.0"
 
@@ -158,8 +144,5 @@ dependencies {
 
     //沉浸式状态栏
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-
-    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
-
 
 }

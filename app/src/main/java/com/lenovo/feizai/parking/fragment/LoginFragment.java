@@ -30,7 +30,6 @@ import com.lenovo.feizai.parking.net.ExceptionHandle;
 import com.lenovo.feizai.parking.net.RetrofitClient;
 import com.lenovo.feizai.parking.util.MD5Util;
 
-import org.angmarch.views.NiceSpinner;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
