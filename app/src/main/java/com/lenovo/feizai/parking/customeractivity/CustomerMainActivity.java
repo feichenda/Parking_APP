@@ -64,6 +64,7 @@ import com.lenovo.feizai.parking.entity.CheckInfo;
 import com.lenovo.feizai.parking.entity.Customer;
 import com.lenovo.feizai.parking.entity.Location;
 import com.lenovo.feizai.parking.activity.MapActivity;
+import com.lenovo.feizai.parking.entity.MerchantProperty;
 import com.lenovo.feizai.parking.merchantactivity.MerchantMainActivity;
 import com.lenovo.feizai.parking.net.ExceptionHandle;
 import com.lenovo.feizai.parking.net.RequestAPI;
@@ -75,6 +76,7 @@ import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -252,7 +254,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
         Location location = new Location();
         location.setLatitude(position.latitude);
         location.setLongitude(position.longitude);
-        client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
+        /*client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
             @Override
             protected void showDialog() {
 
@@ -278,6 +280,44 @@ public class CustomerMainActivity extends BaseLocationActivity{
             @Override
             protected void defeated(BaseModel<Location> locationBaseModel) {
                 Toast.makeText(CustomerMainActivity.this, "你所选地点附近暂无停车场", Toast.LENGTH_SHORT).show();
+                recyclerview.cleanData();
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+
+            }
+        });*/
+
+        client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
+            @Override
+            protected void showDialog() {
+
+            }
+
+            @Override
+            protected void hideDialog() {
+
+            }
+
+            @Override
+            protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                List<MerchantProperty> datas = merchantPropertyBaseModel.getDatas();
+                List<Location> locations = new ArrayList<>();
+                for (MerchantProperty data : datas) {
+                    Location parking = data.getLocation();
+                    LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
+                    OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
+                    baiduMap.addOverlay(option);
+                    locations.add(parking);
+                }
+                recyclerview.replaceData(locations);
+            }
+
+            @Override
+            protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                showToast("你所选地点附近暂无停车场");
                 recyclerview.cleanData();
             }
 
@@ -354,7 +394,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
             setMapOverlay(home, R.mipmap.home);
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(home);//设置经纬度
             baiduMap.animateMapStatus(update);//地图移动到设定位置
-            client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
+            /*client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
                 @Override
                 protected void showDialog() {
 
@@ -392,6 +432,47 @@ public class CustomerMainActivity extends BaseLocationActivity{
                 public void onError(ExceptionHandle.ResponeThrowable e) {
 
                 }
+            });*/
+            client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
+                @Override
+                protected void showDialog() {
+
+                }
+
+                @Override
+                protected void hideDialog() {
+
+                }
+
+                @Override
+                protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                    List<MerchantProperty> parkings = merchantPropertyBaseModel.getDatas();
+                    datas = new ArrayList<>();
+                    for (MerchantProperty data : parkings) {
+                        Location parking = data.getLocation();
+                        LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
+                        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
+                        OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
+                        baiduMap.addOverlay(option);
+                        datas.add(parking);
+                    }
+                    MapStatus.Builder builder = new MapStatus.Builder();
+                    builder.zoom(15.0f);
+                    baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+                    recyclerview.replaceData(datas);
+                    Log.e("tag", parkings.toString());
+                }
+
+                @Override
+                protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                    recyclerview.cleanData();
+                    showToast("您附近暂无停车场");
+                }
+
+                @Override
+                public void onError(ExceptionHandle.ResponeThrowable e) {
+
+                }
             });
         }
     }
@@ -409,7 +490,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
             setMapOverlay(company, R.mipmap.company);
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(company);//设置经纬度
             baiduMap.animateMapStatus(update);//地图移动到设定位置
-            client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
+            client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
                 @Override
                 protected void showDialog() {
 
@@ -421,23 +502,26 @@ public class CustomerMainActivity extends BaseLocationActivity{
                 }
 
                 @Override
-                protected void successful(BaseModel<Location> locationBaseModel) {
-                    List<Location> parkings = locationBaseModel.getDatas();
-                    for (Location parking : parkings) {
+                protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                    List<MerchantProperty> parkings = merchantPropertyBaseModel.getDatas();
+                    datas = new ArrayList<>();
+                    for (MerchantProperty data : parkings) {
+                        Location parking = data.getLocation();
                         LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
                         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
                         OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
                         baiduMap.addOverlay(option);
+                        datas.add(parking);
                     }
                     MapStatus.Builder builder = new MapStatus.Builder();
                     builder.zoom(15.0f);
                     baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-                    datas = parkings;
                     recyclerview.replaceData(datas);
+                    Log.e("tag", parkings.toString());
                 }
 
                 @Override
-                protected void defeated(BaseModel<Location> locationBaseModel) {
+                protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
                     recyclerview.cleanData();
                     showToast("您附近暂无停车场");
                 }
@@ -637,7 +721,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
             mylocation.setMerchantname("我的位置");
             mylocation.setLongitude(nowLatlng.longitude);
             mylocation.setLatitude(nowLatlng.latitude);
-            client.searchParking(mylocation, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
+            client.searchParking(mylocation, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
                 @Override
                 protected void showDialog() {
 
@@ -649,19 +733,22 @@ public class CustomerMainActivity extends BaseLocationActivity{
                 }
 
                 @Override
-                protected void successful(BaseModel<Location> locationBaseModel) {
-                    List<Location> locations = locationBaseModel.getDatas();
-                    for (Location parking : locations) {
+                protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                    List<MerchantProperty> properties = merchantPropertyBaseModel.getDatas();
+                    List<Location> locations = new ArrayList<>();
+                    for (MerchantProperty data : properties) {
+                        Location parking = data.getLocation();
                         LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
                         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
                         OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
                         baiduMap.addOverlay(option);
+                        locations.add(parking);
                     }
                     recyclerview.replaceData(locations);
                 }
 
                 @Override
-                protected void defeated(BaseModel<Location> locationBaseModel) {
+                protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
                     showToast("附近暂无停车场");
                 }
 
@@ -737,7 +824,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
                     Location location = new Location();
                     location.setLatitude(latLng.latitude);
                     location.setLongitude(latLng.longitude);
-                    client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
+                    client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
                         @Override
                         protected void showDialog() {
 
@@ -749,28 +836,30 @@ public class CustomerMainActivity extends BaseLocationActivity{
                         }
 
                         @Override
-                        protected void successful(BaseModel<Location> locationBaseModel) {
-                            List<Location> parkings = locationBaseModel.getDatas();
+                        protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                            List<MerchantProperty> parkings = merchantPropertyBaseModel.getDatas();
                             baiduMap.clear();
-                            for (Location parking : parkings) {
+                            datas = new ArrayList<>();
+                            for (MerchantProperty data : parkings) {
+                                Location parking = data.getLocation();
                                 LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
                                 MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(latLng);//设置经纬度
                                 baiduMap.animateMapStatus(update);//地图移动到设定位置
                                 BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
                                 OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
                                 baiduMap.addOverlay(option);
+                                datas.add(parking);
                             }
                             MapStatus.Builder builder = new MapStatus.Builder();
                             builder.zoom(15.0f);
                             baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-                            datas = parkings;
                             recyclerview.replaceData(datas);
                             Log.e("tag", parkings.toString());
                         }
 
                         @Override
-                        protected void defeated(BaseModel<Location> locationBaseModel) {
-                            Toast.makeText(CustomerMainActivity.this, "您所选地点附近暂无停车场", Toast.LENGTH_SHORT).show();
+                        protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                            showToast("您所选地点附近暂无停车场");
                             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(latLng);//设置经纬度
                             baiduMap.animateMapStatus(update);//地图移动到设定位置
                             recyclerview.cleanData();
