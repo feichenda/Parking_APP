@@ -98,7 +98,7 @@ public class CustomerOrderActivity extends BaseActivity {
                         Order order = GsonUtil.GsonToBean(s, Order.class);
                         baseViewHolder.setText(R.id.merchant, order.getMerchantName());
                         baseViewHolder.setText(R.id.ordertime, ToolUtil.timeStampToString(order.getStartDate()));
-                        baseViewHolder.setText(R.id.price, "￥"+String.format("%.2f", order.getPrice()));
+                        baseViewHolder.setText(R.id.price, "￥" + String.format("%.2f", order.getPrice()));
                     }
                 }
                 return new OrderAdapter(null);
@@ -133,7 +133,7 @@ public class CustomerOrderActivity extends BaseActivity {
 //                fragment.setArguments(bundle);
 //                fragment.show(getSupportFragmentManager(), "dialog");
 
-                OrderDialog dialog = new OrderDialog(CustomerOrderActivity.this, GsonUtil.GsonToBean((String) adapter.getItem(position),Order.class));
+                OrderDialog dialog = new OrderDialog(CustomerOrderActivity.this, GsonUtil.GsonToBean((String) adapter.getItem(position), Order.class));
                 dialog.show();
             }
         });
@@ -178,12 +178,12 @@ public class CustomerOrderActivity extends BaseActivity {
                 index = 0;
                 list = new ArrayList<>();
                 getSubscribeData(username, year, month, sType);
-                index += 10;
+                index++;
             }
         })
                 .setTitleText("选择日期")
                 .setDate(endDate)
-                .setRangDate(startDate,endDate)
+                .setRangDate(startDate, endDate)
                 .isCenterLabel(true)
                 .setType(new boolean[]{true, true, false, false, false, false}).build();
         timePickerView.show();
@@ -203,12 +203,12 @@ public class CustomerOrderActivity extends BaseActivity {
                     index = 0;
                     list = new ArrayList<>();
                     getSubscribeData(username, year, month, sType);
-                    index += 10;
+                    index++;
                 } else {
                     index = 0;
                     list = new ArrayList<>();
                     getSubscribeData(username, year, month, sType);
-                    index += 10;
+                    index++;
                 }
             }
         })
@@ -234,22 +234,21 @@ public class CustomerOrderActivity extends BaseActivity {
             @Override
             protected void successful(BaseModel<String> stringBaseModel) {
                 order_list.refreshEnd();
-                List<String> result = stringBaseModel.getDatas();
-                if (result.size() > 0) {
-                    for (String s : result) {
-                        list.add(s);
-                        order_list.replaceData(list);
-                    }
-                    if (result.size() < 10) {
-                        order_list.loadEnd();
-                    } else {
+                switch (stringBaseModel.getMessage()) {
+                    case "yes":
+                        List<String> result = stringBaseModel.getDatas();
+                        for (String s : result) {
+                            list.add(s);
+                            order_list.replaceData(list);
+                        }
                         order_list.loadComplete();
-                    }
-                } else {
-                    Toast.makeText(CustomerOrderActivity.this, "没有更多数据了", Toast.LENGTH_SHORT).show();
-                    order_list.loadEnd();
+                        break;
+                    case "no":
+                        showToast("没有更多数据了");
+                        order_list.loadEnd();
+                        break;
                 }
-                index += 10;
+                index++;
             }
 
             @Override
@@ -257,6 +256,7 @@ public class CustomerOrderActivity extends BaseActivity {
                 order_list.cleanData();
                 order_list.refreshEnd();
                 order_list.loadFail();
+                showToast("查询失败");
             }
 
             @Override

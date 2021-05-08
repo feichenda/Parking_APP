@@ -39,6 +39,7 @@ import com.lenovo.feizai.parking.dialog.ShowPhotoDialog;
 import com.lenovo.feizai.parking.entity.CollectionInfo;
 import com.lenovo.feizai.parking.entity.Comment;
 import com.lenovo.feizai.parking.entity.Location;
+import com.lenovo.feizai.parking.entity.MerchantState;
 import com.lenovo.feizai.parking.entity.ParkingInfo;
 import com.lenovo.feizai.parking.entity.MerchantProperty;
 import com.lenovo.feizai.parking.entity.ParkingNumber;
@@ -77,6 +78,8 @@ public class ParkingDetailedInfoActivity extends BaseActivity {
     ImageView collection_img;
     @BindView(R.id.merchant)
     TextView merchantname;
+    @BindView(R.id.state)
+    TextView state;
 
     Banner banner;
     TextView max_number;
@@ -92,6 +95,7 @@ public class ParkingDetailedInfoActivity extends BaseActivity {
     private BaseRefreshRecyclerView comment_list;
     private List<Comment> comments;
     private int index;
+    private Boolean isOpen;
 
     public ParkingDetailedInfoActivity() {
         super(R.layout.activity_parking_detailed_info);
@@ -106,6 +110,7 @@ public class ParkingDetailedInfoActivity extends BaseActivity {
         client = RetrofitClient.getInstance(ParkingDetailedInfoActivity.this);
         comments = new ArrayList<>();
         index = 0;
+        isOpen = false;
         View view = LayoutInflater.from(this).inflate(R.layout.activity_parking_detailed_info_head, null, false);
         initHead(view);
 
@@ -233,6 +238,10 @@ public class ParkingDetailedInfoActivity extends BaseActivity {
     }
 
     public void subscribe() {
+        if (!isOpen) {
+            showToast("商家还在休息中，请稍后预约!!!");
+            return;
+        }
         if (subscribenumber > 0) {
             Intent intent = new Intent(this, SubscribeActivity.class);
             intent.putExtra("merchant", location.getMerchantname());
@@ -470,6 +479,16 @@ public class ParkingDetailedInfoActivity extends BaseActivity {
                 Location location = merchantProperty.getLocation();
                 ParkingNumber parkingNumber = merchantProperty.getParkingNumber();
                 ParkingDetailedInfoActivity.this.parkingInfo = parkingInfo;
+                MerchantState merchantState = merchantProperty.getMerchantState();
+                if (TextUtils.equals(merchantState.getOperatingstate(), "营业中")) {
+                    state.setText("营业中");
+                    state.setTextColor(Color.GREEN);
+                    isOpen = true;
+                } else {
+                    state.setText("休息中");
+                    state.setTextColor(Color.RED);
+                    isOpen = false;
+                }
 
                 String image = ParkingDetailedInfoActivity.this.parkingInfo.getMerchantimage();
                 String[] path = image.split("&");

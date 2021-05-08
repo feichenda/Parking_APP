@@ -180,7 +180,7 @@ public class MerchantOrderFragment extends BaseFragment {
                 index = 0;
                 list = new ArrayList<>();
                 getSubscribeData(merchantname, year, month, sType);
-                index += 10;
+                index++;
             }
         })
                 .setTitleText("选择日期")
@@ -205,12 +205,12 @@ public class MerchantOrderFragment extends BaseFragment {
                     index = 0;
                     list = new ArrayList<>();
                     getSubscribeData(merchantname, year, month, sType);
-                    index += 10;
+                    index++;
                 } else {
                     index = 0;
                     list = new ArrayList<>();
                     getSubscribeData(merchantname, year, month, sType);
-                    index += 10;
+                    index++;
                 }
             }
         })
@@ -236,22 +236,21 @@ public class MerchantOrderFragment extends BaseFragment {
             @Override
             protected void successful(BaseModel<String> stringBaseModel) {
                 order_list.refreshEnd();
-                List<String> result = stringBaseModel.getDatas();
-                if (result.size() > 0) {
-                    for (String s : result) {
-                        list.add(s);
-                        order_list.replaceData(list);
-                    }
-                    if (result.size() < 10) {
-                        order_list.loadEnd();
-                    } else {
+                switch (stringBaseModel.getMessage()) {
+                    case "yes":
+                        List<String> result = stringBaseModel.getDatas();
+                        for (String s : result) {
+                            list.add(s);
+                            order_list.replaceData(list);
+                        }
                         order_list.loadComplete();
-                    }
-                } else {
-                    showToast("没有更多数据了");
-                    order_list.loadEnd();
+                        break;
+                    case "no":
+                        showToast("没有更多数据了");
+                        order_list.loadEnd();
+                        break;
                 }
-                index += 10;
+                index++;
             }
 
             @Override
