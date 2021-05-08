@@ -58,6 +58,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
+                android:textSize="12sp"
                 android:layout_marginRight="5dp" />
 
             <ImageView
@@ -102,6 +103,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:maxLines="1"
+                android:textSize="12sp"
                 android:layout_marginRight="5dp" />
 
             <ImageView

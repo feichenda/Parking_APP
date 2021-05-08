@@ -43,7 +43,7 @@ public class CustomerSettingActivity extends BaseActivity {
 
     private RetrofitClient client;
     private LatLng home_Lat, company_Lat;
-    private Boolean isNull;
+    private Boolean isHomeNull, isCompanyNull;
 
     public CustomerSettingActivity() {
         super(R.layout.activity_customer_setting);
@@ -54,7 +54,8 @@ public class CustomerSettingActivity extends BaseActivity {
         client = RetrofitClient.getInstance(this);
         home_Lat = null;
         company_Lat = null;
-        isNull = true;
+        isHomeNull = true;
+        isCompanyNull = true;
     }
 
     @OnClick(R.id.back)
@@ -113,7 +114,7 @@ public class CustomerSettingActivity extends BaseActivity {
 
     @OnClick(R.id.home)
     public void home() {
-        if (isNull) {
+        if (isHomeNull) {
             startActivityForResult(MapActivity.class, 1);
         } else {
             Intent intent = new Intent(CustomerSettingActivity.this, MapActivity.class);
@@ -124,7 +125,7 @@ public class CustomerSettingActivity extends BaseActivity {
 
     @OnClick(R.id.company)
     public void company() {
-        if (isNull) {
+        if (isCompanyNull) {
             startActivityForResult(MapActivity.class, 2);
         } else {
             Intent intent = new Intent(CustomerSettingActivity.this, MapActivity.class);
@@ -141,13 +142,13 @@ public class CustomerSettingActivity extends BaseActivity {
                 if (resultCode == RESULT_OK) {
                     String latlng_str = data.getStringExtra("latlng");
                     String result_str = data.getStringExtra("result");
-                    LatLng latLng = GsonUtil.GsonToBean(latlng_str, LatLng.class);
+                    home_Lat = GsonUtil.GsonToBean(latlng_str, LatLng.class);
                     ReverseGeoCodeResult result = GsonUtil.GsonToBean(result_str, ReverseGeoCodeResult.class);
                     Customer customer = new Customer();
                     customer.setUsername(ToolUtil.getUsername(this));
                     customer.setHome(result.getAddress());
-                    customer.setHome_latitude(latLng.latitude);
-                    customer.setHome_longitude(latLng.longitude);
+                    customer.setHome_latitude(home_Lat.latitude);
+                    customer.setHome_longitude(home_Lat.longitude);
                     Log.e("tag", customer.toString());
                     client.updatehomeaddressinfo(customer, new BaseObserver<BaseModel>(this) {
                         @Override
@@ -164,6 +165,7 @@ public class CustomerSettingActivity extends BaseActivity {
                         protected void successful(BaseModel baseModel) {
                             home.setText(result.getAddress());
                             showToast(baseModel.getMessage());
+                            isHomeNull = false;
                         }
 
                         @Override
@@ -183,13 +185,13 @@ public class CustomerSettingActivity extends BaseActivity {
                 if (resultCode == RESULT_OK) {
                     String latlng_str = data.getStringExtra("latlng");
                     String result_str = data.getStringExtra("result");
-                    LatLng latLng = GsonUtil.GsonToBean(latlng_str, LatLng.class);
+                    company_Lat = GsonUtil.GsonToBean(latlng_str, LatLng.class);
                     ReverseGeoCodeResult result = GsonUtil.GsonToBean(result_str, ReverseGeoCodeResult.class);
                     Customer customer = new Customer();
                     customer.setUsername(ToolUtil.getUsername(this));
                     customer.setCompany(result.getAddress());
-                    customer.setCompany_latitude(latLng.latitude);
-                    customer.setCompany_longitude(latLng.longitude);
+                    customer.setCompany_latitude(company_Lat.latitude);
+                    customer.setCompany_longitude(company_Lat.longitude);
                     Log.e("tag", customer.toString());
                     client.updateCompanyAddressInfo(customer, new BaseObserver<BaseModel>(this) {
                         @Override
@@ -206,6 +208,7 @@ public class CustomerSettingActivity extends BaseActivity {
                         protected void successful(BaseModel baseModel) {
                             company.setText(result.getAddress());
                             showToast(baseModel.getMessage());
+                            isCompanyNull = false;
                         }
 
                         @Override
@@ -222,11 +225,18 @@ public class CustomerSettingActivity extends BaseActivity {
                 }
                 break;
         }
+//        isHomeNull = true;
+//        isCompanyNull = true;
+//        getData();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        getData();
+    }
+
+    private void getData() {
         client.selectCustomerByUsername(ToolUtil.getUsername(this), new BaseObserver<BaseModel<Customer>>(this) {
             @Override
             protected void showDialog() {
@@ -241,17 +251,22 @@ public class CustomerSettingActivity extends BaseActivity {
             @Override
             protected void successful(BaseModel<Customer> customerBaseModel) {
                 Customer customer = customerBaseModel.getData();
-                if (TextUtils.isEmpty(customer.getHome()) || TextUtils.isEmpty(customer.getCompany())) {
+                if (TextUtils.isEmpty(customer.getHome())) {
                     home.setText("去设置");
-                    company.setText("去设置");
-                    isNull = true;
-                    return;
+                    isHomeNull = true;
+                }else {
+                    home.setText(customer.getHome());
+                    home_Lat = new LatLng(customer.getHome_latitude(), customer.getHome_longitude());
+                    isHomeNull = false;
                 }
-                home.setText(customer.getHome());
-                company.setText(customer.getCompany());
-                home_Lat = new LatLng(customer.getHome_latitude(), customer.getHome_longitude());
-                company_Lat = new LatLng(customer.getCompany_latitude(), customer.getCompany_longitude());
-                isNull = false;
+                if (TextUtils.isEmpty(customer.getCompany())) {
+                    company.setText("去设置");
+                    isCompanyNull = true;
+                } else {
+                    company.setText(customer.getCompany());
+                    company_Lat = new LatLng(customer.getCompany_latitude(), customer.getCompany_longitude());
+                    isCompanyNull = false;
+                }
             }
 
             @Override

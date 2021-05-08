@@ -123,6 +123,8 @@
 
         <activity android:name=".customeractivity.CustomerSettingActivity"></activity>
 
+        <activity android:name=".merchantactivity.MerchantSettingActivity"></activity>
+
         <activity android:name=".activity.WebActivity"></activity>
 
         <service

@@ -327,7 +327,7 @@ public class MerchantMainActivity extends BaseActivity {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(CustomerSettingActivity.class);
+                startActivity(MerchantSettingActivity.class);
             }
         });
 
