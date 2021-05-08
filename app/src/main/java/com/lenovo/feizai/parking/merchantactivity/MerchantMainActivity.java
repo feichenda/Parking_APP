@@ -3,23 +3,17 @@ package com.lenovo.feizai.parking.merchantactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,22 +21,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lenovo.feizai.parking.R;
 import com.lenovo.feizai.parking.activity.LoginAcitivity;
+import com.lenovo.feizai.parking.customeractivity.CustomerSettingActivity;
 import com.lenovo.feizai.parking.base.BaseActivity;
 import com.lenovo.feizai.parking.base.BaseModel;
 import com.lenovo.feizai.parking.base.BaseObserver;
 import com.lenovo.feizai.parking.base.BaseRecyclerView;
-import com.lenovo.feizai.parking.customeractivity.CustomerPersonalDataActivity;
-import com.lenovo.feizai.parking.dialog.SelectSpaceDialog;
 import com.lenovo.feizai.parking.dialog.ShowPhotoDialog;
-import com.lenovo.feizai.parking.entity.AdImage;
 import com.lenovo.feizai.parking.entity.Location;
 import com.lenovo.feizai.parking.entity.Merchant;
 import com.lenovo.feizai.parking.entity.ParkingInfo;
@@ -59,17 +49,13 @@ import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
-import uk.co.senab.photoview.PhotoView;
 
 /**
  * @author feizai
@@ -326,7 +312,6 @@ public class MerchantMainActivity extends BaseActivity {
         name_text = menuView.findViewById(R.id.username);
         phone_text = menuView.findViewById(R.id.phone);
         RelativeLayout setting = menuView.findViewById(R.id.setting);
-//        RelativeLayout add = menuView.findViewById(R.id.add);
         RelativeLayout out = menuView.findViewById(R.id.out);
         View head = menuView.findViewById(R.id.fragment);
 
@@ -342,13 +327,7 @@ public class MerchantMainActivity extends BaseActivity {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialDialog dialog = new MaterialDialog(MerchantMainActivity.this, MaterialDialog.getDEFAULT_BEHAVIOR());
-                dialog.title(null, "关于我们");
-                dialog.message(null, "版本号V1.0", null);
-                dialog.positiveButton(null, "确认", materialDialog -> {
-                    return null;
-                });
-                dialog.show();
+                startActivity(CustomerSettingActivity.class);
             }
         });
 

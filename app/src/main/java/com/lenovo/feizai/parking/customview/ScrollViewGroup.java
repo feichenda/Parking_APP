@@ -378,7 +378,8 @@ public class ScrollViewGroup extends ViewGroup {
         if (mInnerScrollView instanceof RecyclerView) {
             rv = (RecyclerView) mInnerScrollView;
             if (android.os.Build.VERSION.SDK_INT >= 14) {
-                return Math.max(0, mTargetInitTop - rv.computeVerticalScrollRange());
+//                return Math.max(0, mTargetInitTop - rv.computeVerticalScrollRange());
+                return 0;
             }
         }
         return 0;

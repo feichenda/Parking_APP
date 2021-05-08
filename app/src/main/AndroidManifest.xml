@@ -121,6 +121,10 @@
 
         <activity android:name=".customeractivity.ChangeSubscribeActivity"></activity>
 
+        <activity android:name=".customeractivity.CustomerSettingActivity"></activity>
+
+        <activity android:name=".activity.WebActivity"></activity>
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

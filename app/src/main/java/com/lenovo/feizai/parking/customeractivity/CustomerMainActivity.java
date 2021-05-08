@@ -65,14 +65,12 @@ import com.lenovo.feizai.parking.entity.Customer;
 import com.lenovo.feizai.parking.entity.Location;
 import com.lenovo.feizai.parking.activity.MapActivity;
 import com.lenovo.feizai.parking.entity.MerchantProperty;
-import com.lenovo.feizai.parking.merchantactivity.MerchantMainActivity;
 import com.lenovo.feizai.parking.net.ExceptionHandle;
 import com.lenovo.feizai.parking.net.RequestAPI;
 import com.lenovo.feizai.parking.net.RetrofitClient;
 import com.lenovo.feizai.parking.util.DensityUtil;
 import com.lenovo.feizai.parking.util.GsonUtil;
 import com.lenovo.feizai.parking.util.ToolUtil;
-import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -217,13 +215,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
                     }
                     break;
                     case R.id.setting: {
-                        MaterialDialog dialog = new MaterialDialog(CustomerMainActivity.this, MaterialDialog.getDEFAULT_BEHAVIOR());
-                        dialog.title(null, "关于我们");
-                        dialog.message(null, "版本号V1.0", null);
-                        dialog.positiveButton(null, "确认", materialDialog -> {
-                            return null;
-                        });
-                        dialog.show();
+                        startActivity(CustomerSettingActivity.class);
                     }
                     break;
                     case R.id.logout: {
@@ -620,7 +612,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
                     protected void convert(@NotNull BaseViewHolder baseViewHolder, Location location) {
                         baseViewHolder.setText(R.id.item_name, location.getMerchantname());
                         if (nowLatlng != null)
-                            baseViewHolder.setText(R.id.item_distance, ToolUtil.getDistance(location, nowLatlng) + "公里");
+                            baseViewHolder.setText(R.id.item_distance, "约"+ToolUtil.getDistance(location, nowLatlng) + "公里");
                         else
                             baseViewHolder.setText(R.id.item_distance, "");
                     }

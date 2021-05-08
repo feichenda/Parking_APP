@@ -154,7 +154,7 @@ public class MapActivity extends BaseLocationActivity implements BaiduMap.OnMapS
         baiduMap.setMyLocationEnabled(true);
         //初始化放大级别
         MapStatus.Builder builder = new MapStatus.Builder();
-        builder.zoom(17.0f);
+        builder.zoom(16.0f);
         baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         if (myLat != null) {
             baiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(myLat));
@@ -170,6 +170,8 @@ public class MapActivity extends BaseLocationActivity implements BaiduMap.OnMapS
         if (isFirst) {
             update = MapStatusUpdateFactory.newLatLng(nowlatlng);//设置经纬度
             baiduMap.animateMapStatus(update);//地图移动到设定位置
+            selectlatlng = nowlatlng;
+            mCoder.reverseGeoCode(new ReverseGeoCodeOption().location(selectlatlng).newVersion(1));
             isFirst = false;
         }
         city = location.getCity();

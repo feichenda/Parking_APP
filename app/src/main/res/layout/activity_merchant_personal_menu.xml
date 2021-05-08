@@ -46,40 +46,6 @@
             android:padding="10dp"/>
     </RelativeLayout>
 
-    <!--<RelativeLayout
-        android:id="@+id/add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
-        <ImageView
-            android:id="@+id/add_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/setting"
-            android:layout_centerVertical="true"
-            android:padding="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="我的添加"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/add_img"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/back"
-            android:rotation="180"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="10dp"/>
-    </RelativeLayout>-->
-
     <RelativeLayout
         android:id="@+id/out"
         android:layout_width="match_parent"
