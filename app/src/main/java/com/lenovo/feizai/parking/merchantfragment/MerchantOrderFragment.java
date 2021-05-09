@@ -79,7 +79,7 @@ public class MerchantOrderFragment extends BaseFragment {
         merchantname = bundle.getString("name");
         client = RetrofitClient.getInstance(getContext());
         username = ToolUtil.getUsername(getActivity());
-        index = 0;
+        index = 1;
         list = new ArrayList<>();
         sType = "预定";
         now = new Date();
@@ -112,13 +112,13 @@ public class MerchantOrderFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 if (sType.equals("预定")) {
-                    index = 0;
+                    index = 1;
                     order_list.cleanData();
                     list = new ArrayList<>();
                     getSubscribeData(merchantname, year, month, sType);
 
                 } else {
-                    index = 0;
+                    index = 1;
                     order_list.cleanData();
                     list = new ArrayList<>();
                     getSubscribeData(merchantname, year, month, sType);
@@ -177,7 +177,7 @@ public class MerchantOrderFragment extends BaseFragment {
                 month = Integer.valueOf(String.format("%tm", date));
                 showToast(year + "年" + month + "月");
                 dateView.setText(year + "年" + month + "月");
-                index = 0;
+                index = 1;
                 list = new ArrayList<>();
                 getSubscribeData(merchantname, year, month, sType);
                 index++;
@@ -202,12 +202,12 @@ public class MerchantOrderFragment extends BaseFragment {
                 sType = options1Items.size() > 0 ? options1Items.get(options1) : "";
                 typeView.setText(sType);
                 if (sType.equals("预定")) {
-                    index = 0;
+                    index = 1;
                     list = new ArrayList<>();
                     getSubscribeData(merchantname, year, month, sType);
                     index++;
                 } else {
-                    index = 0;
+                    index = 1;
                     list = new ArrayList<>();
                     getSubscribeData(merchantname, year, month, sType);
                     index++;
@@ -258,6 +258,8 @@ public class MerchantOrderFragment extends BaseFragment {
                 order_list.cleanData();
                 order_list.refreshEnd();
                 order_list.loadFail();
+                showToast("查询失败");
+                index = 1;
             }
 
             @Override

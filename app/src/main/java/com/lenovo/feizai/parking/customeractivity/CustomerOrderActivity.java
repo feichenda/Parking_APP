@@ -257,7 +257,7 @@ public class CustomerOrderActivity extends BaseActivity {
                 order_list.refreshEnd();
                 order_list.loadFail();
                 showToast("查询失败");
-                index++;
+                index = 1;
             }
 
             @Override
