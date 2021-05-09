@@ -383,7 +383,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
             location.setLongitude(myCustomer.getHome_longitude());
             location.setLatitude(myCustomer.getHome_latitude());
             LatLng home = new LatLng(myCustomer.getHome_latitude(), myCustomer.getHome_longitude());
-            setMapOverlay(home, R.mipmap.home);
+            setMapOverlay(home, R.mipmap.my_position);
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(home);//设置经纬度
             baiduMap.animateMapStatus(update);//地图移动到设定位置
             /*client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
@@ -479,7 +479,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
             location.setLongitude(myCustomer.getCompany_longitude());
             location.setLatitude(myCustomer.getCompany_latitude());
             LatLng company = new LatLng(myCustomer.getCompany_latitude(), myCustomer.getCompany_longitude());
-            setMapOverlay(company, R.mipmap.company);
+            setMapOverlay(company, R.mipmap.my_position);
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(company);//设置经纬度
             baiduMap.animateMapStatus(update);//地图移动到设定位置
             client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {

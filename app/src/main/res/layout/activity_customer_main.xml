@@ -18,35 +18,29 @@
             android:background="@android:color/white"
             android:theme="@style/AppTheme">
 
-            <RelativeLayout
+            <ImageView
+                android:layout_gravity="right|center_vertical"
+                android:id="@+id/scanner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:src="@mipmap/scanner" />
 
-                <ImageView
-                    android:id="@+id/ing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/scanner"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="5dp"
-                    android:layout_centerVertical="true"
-                    android:src="@mipmap/ing" />
+            <ImageView
+                android:layout_gravity="right|center_vertical"
+                android:id="@+id/ing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:src="@mipmap/ing" />
 
-                <ImageView
-                    android:id="@+id/scanner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/scanner" />
-            </RelativeLayout>
+
         </androidx.appcompat.widget.Toolbar>
 
         <com.lenovo.feizai.parking.customview.ScrollViewGroup
@@ -150,6 +144,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textSize="18sp"
+                                        android:layout_centerVertical="true"
                                         android:textColor="@android:color/black"
                                         android:text="家" />
 
@@ -195,6 +190,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textSize="18sp"
+                                        android:layout_centerVertical="true"
                                         android:textColor="@android:color/black"
                                         android:text="公司" />
 

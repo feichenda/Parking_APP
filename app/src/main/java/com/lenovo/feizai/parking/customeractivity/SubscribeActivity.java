@@ -320,9 +320,29 @@ public class SubscribeActivity extends BaseActivity {
             dialog.positiveButton(null, "确认", materialDialog -> {
                 return null;
             });
+            dialog.negativeButton(null, "其他车辆", materialDialog ->{
+                startActivityForResult(EnterCarLicenseActivity.class, 1);
+                return null;
+            });
             dialog.show();
         } else {
-            showToast("您暂无可预约的车辆");
+            if (TextUtils.isEmpty(sCar)) {
+                showToast("您暂无可预约的车辆");
+                MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+                dialog.title(null, "提示");
+                dialog.message(null, "是否输入车牌号以完成预约？", null);
+                dialog.positiveButton(null, "去输入", materialDialog -> {
+                    startActivityForResult(EnterCarLicenseActivity.class, 1);
+                    return null;
+                });
+                dialog.negativeButton(null, "放弃预约", materialDialog -> {
+                    finish();
+                    return null;
+                });
+                dialog.show();
+            } else {
+                startActivityForResult(EnterCarLicenseActivity.class, 1);
+            }
         }
     }
 
@@ -478,5 +498,19 @@ public class SubscribeActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    String car = data.getStringExtra("car");
+                    select_car.setText(car);
+                    sCar = car;
+                }
+                break;
+        }
     }
 }

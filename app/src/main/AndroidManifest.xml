@@ -127,6 +127,8 @@
 
         <activity android:name=".activity.WebActivity"></activity>
 
+        <activity android:name=".customeractivity.EnterCarLicenseActivity"></activity>
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
