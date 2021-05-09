@@ -76,7 +76,7 @@ public class CustomerOrderActivity extends BaseActivity {
         client = RetrofitClient.getInstance(this);
         SharedPreferences preferences = getSharedPreferences("userdata", Context.MODE_PRIVATE);
         username = preferences.getString("username", "");
-        index = 0;
+        index = 1;
         list = new ArrayList<>();
         sType = "预定";
         now = new Date();
@@ -109,13 +109,13 @@ public class CustomerOrderActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 if (sType.equals("预定")) {
-                    index = 0;
+                    index = 1;
                     order_list.cleanData();
                     list = new ArrayList<>();
                     getSubscribeData(username, year, month, sType);
 
                 } else {
-                    index = 0;
+                    index = 1;
                     order_list.cleanData();
                     list = new ArrayList<>();
                     getSubscribeData(username, year, month, sType);
@@ -175,7 +175,7 @@ public class CustomerOrderActivity extends BaseActivity {
                 month = Integer.valueOf(String.format("%tm", date));
                 showToast(year + "年" + month + "月");
                 dateView.setText(year + "年" + month + "月");
-                index = 0;
+                index = 1;
                 list = new ArrayList<>();
                 getSubscribeData(username, year, month, sType);
                 index++;
@@ -200,12 +200,12 @@ public class CustomerOrderActivity extends BaseActivity {
                 sType = options1Items.size() > 0 ? options1Items.get(options1) : "";
                 typeView.setText(sType);
                 if (sType.equals("预定")) {
-                    index = 0;
+                    index = 1;
                     list = new ArrayList<>();
                     getSubscribeData(username, year, month, sType);
                     index++;
                 } else {
-                    index = 0;
+                    index = 1;
                     list = new ArrayList<>();
                     getSubscribeData(username, year, month, sType);
                     index++;
@@ -257,6 +257,7 @@ public class CustomerOrderActivity extends BaseActivity {
                 order_list.refreshEnd();
                 order_list.loadFail();
                 showToast("查询失败");
+                index++;
             }
 
             @Override
