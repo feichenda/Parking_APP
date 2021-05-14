@@ -35,14 +35,14 @@ import retrofit2.http.Query;
  * @date 12/21/2020 021 10:02:37 PM
  */
 public interface RequestAPI {
-    public final static String baseURL = "http://172.21.58.82:8080/Parking_war/";
-    public final static String baseImageURL = "http://172.21.58.82:8080/";
+//    public final static String baseURL = "http://172.21.58.82:8080/Parking_war/";
+//    public final static String baseImageURL = "http://172.21.58.82:8080/";
 
 //    public final static String baseURL = "http://192.168.43.183:8080/Parking_war/";
 //    public final static String baseImageURL = "http://192.168.43.183:8080/";
 
-//    public final static String baseURL = "http://120.78.208.177:8080/Parking/";
-//    public final static String baseImageURL = "http://120.78.208.177:8080/";
+    public final static String baseURL = "http://120.78.208.177:8080/Parking/";
+    public final static String baseImageURL = "http://120.78.208.177:8080/";
 
 //    public final static String baseURL = "http://39.108.48.82:8080/Parking/";
 //    public final static String baseImageURL = "http://39.108.48.82:8080/";
