@@ -133,6 +133,10 @@ public class EnterCarLicenseActivity extends BaseActivity {
                 @Override
                 protected void defeated(BaseModel baseModel) {
                     showToast(baseModel.getMessage());
+                    if (baseModel.getCode() == 202) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
                     Intent intent = new Intent();
                     intent.putExtra("car", license);
                     setResult(RESULT_OK,intent);
