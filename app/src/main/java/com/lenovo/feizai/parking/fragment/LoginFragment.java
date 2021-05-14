@@ -92,6 +92,14 @@ public class LoginFragment extends BaseFragment {
         PromptDialog promptDialog = new PromptDialog(getActivity());
         String username = user.getText().toString().trim();
         String password = pass.getText().toString().trim();
+        if (username.length() < 3) {
+            showToast("用户名长度不能小于3位");
+            return;
+        }
+        if (password.length() < 6) {
+            showToast("密码长度不能小于6位");
+            return;
+        }
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(getContext(), "账号不能为空!", Toast.LENGTH_SHORT).show();
         } else {

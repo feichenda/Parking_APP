@@ -112,6 +112,10 @@ public class RegisterFragment extends BaseFragment {
             showToast("密码长度不能小于6位");
             return;
         }
+        if (username.length() < 3) {
+            showToast("用户名长度不能小于3位");
+            return;
+        }
         if (TextUtils.isEmpty(phonenumber)){
             showToast("手机号不能为空");
         }else {
