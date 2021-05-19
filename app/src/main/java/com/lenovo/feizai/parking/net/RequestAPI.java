@@ -141,9 +141,6 @@ public interface RequestAPI {
     @GET("api/merchant/selectMerchantByUsername")
     Observable<BaseModel<MerchantProperty>> selectMerchantByUsername(@Query("username") String username);
 
-    @GET("api/subscribe/findSubscribeOrderByLicense")
-    Observable<BaseModel> findSubscribeOrderByLicense(@Query("license") String license, @Query("merchant") String merchant);
-
     @GET("api/merchant/findMerchantState")
     Observable<BaseModel<MerchantState>> findMerchantState(@Query("merchant") String merchant);
 
@@ -233,5 +230,11 @@ public interface RequestAPI {
 
     @POST("api/check/selectUsingSpace")
     Observable<BaseModel<CheckInfo>> selectUsingSpace(@Body ParkingSpace space);
+
+    @GET("api/merchant/isExistParkingInfo")
+    Observable<BaseModel<Boolean>> isExistParkingInfo(@Query("merchantname") String merchantname);
+
+    @GET("api/subscribe/isSubscribing")
+    Observable<BaseModel<Boolean>> isSubscribing(@Query("merchantname") String merchantname, @Query("car") String car);
 }
 

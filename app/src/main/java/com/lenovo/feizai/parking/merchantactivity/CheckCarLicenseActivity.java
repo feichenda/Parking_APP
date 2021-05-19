@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.lenovo.feizai.parking.R;
 import com.lenovo.feizai.parking.base.BaseActivity;
+import com.lenovo.feizai.parking.net.RetrofitClient;
 import com.lenovo.feizai.parking.util.ToolUtil;
 import com.pxy.LicensePlateView;
 

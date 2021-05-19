@@ -258,10 +258,6 @@ public class RetrofitClient {
         api.selectMerchantByUsername(name).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
 
-    public void findSubscribeOrderByLicense(String license, String merchant, Observer<?> observer) {
-        api.findSubscribeOrderByLicense(license, merchant).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
-    }
-
     public void findMerchantState(String name, Observer<?> observer) {
         api.findMerchantState(name).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
@@ -355,7 +351,7 @@ public class RetrofitClient {
     }
 
     public void updateByNowCode(String order, String checkinfo, Observer<?> observer) {
-        api.updateByNowCode(order,checkinfo).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+        api.updateByNowCode(order, checkinfo).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
 
     public void addCheckInfo(CheckInfo checkInfo, Observer<?> observer) {
@@ -367,7 +363,7 @@ public class RetrofitClient {
     }
 
     public void updataByScanQRCode(String order, String checkinfo, Observer<?> observer) {
-        api.updataByScanQRCode(order,checkinfo).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+        api.updataByScanQRCode(order, checkinfo).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
 
     public void cancelOrderByNumber(String order, Observer<?> observer) {
@@ -376,5 +372,13 @@ public class RetrofitClient {
 
     public void selectUsingSpace(ParkingSpace space, Observer<?> observer) {
         api.selectUsingSpace(space).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+    }
+
+    public void isExistParkingInfo(String name, Observer<?> observer) {
+        api.isExistParkingInfo(name).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+    }
+
+    public void isSubscribing(String name, String car, Observer<?> observer) {
+        api.isSubscribing(name, car).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
 }

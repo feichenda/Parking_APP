@@ -71,6 +71,7 @@ import com.lenovo.feizai.parking.net.RetrofitClient;
 import com.lenovo.feizai.parking.util.DensityUtil;
 import com.lenovo.feizai.parking.util.GsonUtil;
 import com.lenovo.feizai.parking.util.ToolUtil;
+import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -79,6 +80,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.leefeng.promptlibrary.PromptDialog;
 
 import static com.lenovo.feizai.parking.camera.CaptureActivity.REQUEST_QR_CODE;
 
@@ -970,7 +972,15 @@ public class CustomerMainActivity extends BaseLocationActivity{
                     boolean flag = GsonUtil.isJson(result);
                     if (flag) {//是JSON字符串，出口扫码
                         try {
-                            GsonUtil.GsonToBean(result, CheckInfo.class);
+                            CheckInfo checkInfo = GsonUtil.GsonToBean(result, CheckInfo.class);
+                            if (checkInfo.getMerchant().isEmpty() || checkInfo.getMerchant().equals("null")) {
+                                MaterialDialog dialog = new MaterialDialog(CustomerMainActivity.this, MaterialDialog.getDEFAULT_BEHAVIOR());
+                                dialog.title(null, "错误");
+                                dialog.icon(null, getResources().getDrawable(R.drawable.ic_error));
+                                dialog.message(null, "二维码识别错误", null);
+                                dialog.show();
+                                return;
+                            }
                             Intent intent = new Intent(CustomerMainActivity.this, ScannerPayActivity.class);
                             intent.putExtra("json", result);
                             startActivity(intent);
@@ -983,9 +993,45 @@ public class CustomerMainActivity extends BaseLocationActivity{
                             dialog.show();
                         }
                     } else {//不是JSON字符串，非出口扫码
-                        Intent intent = new Intent(CustomerMainActivity.this, CarLicenseActivity.class);
-                        intent.putExtra("merchant", result);
-                        startActivity(intent);
+                        PromptDialog dialog = new PromptDialog(this);
+                        client.isExistParkingInfo(result, new BaseObserver<BaseModel<Boolean>>(this) {
+                            @Override
+                            protected void showDialog() {
+                                dialog.showLoading("加载中···");
+                            }
+
+                            @Override
+                            protected void hideDialog() {
+                            }
+
+                            @Override
+                            protected void successful(BaseModel<Boolean> booleanBaseModel) {
+                                dialog.dismiss();
+                                if (booleanBaseModel.getData()) {
+                                    Intent intent = new Intent(CustomerMainActivity.this, CarLicenseActivity.class);
+                                    intent.putExtra("merchant", result);
+                                    startActivity(intent);
+                                }
+                            }
+
+                            @Override
+                            protected void defeated(BaseModel<Boolean> booleanBaseModel) {
+                                dialog.dismiss();
+                                dialog.dismiss();
+                                MaterialDialog dialog = new MaterialDialog(CustomerMainActivity.this, MaterialDialog.getDEFAULT_BEHAVIOR());
+                                dialog.title(null, "错误");
+                                dialog.icon(null, getResources().getDrawable(R.drawable.ic_error));
+                                dialog.message(null, "二维码识别错误", null);
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void onError(ExceptionHandle.ResponeThrowable e) {
+                                showToast(e.getMessage());
+                                Logger.e(e,e.getMessage());
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 }
                 break;

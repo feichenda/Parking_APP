@@ -37,6 +37,7 @@ import com.lenovo.feizai.parking.util.DensityUtil;
 import com.lenovo.feizai.parking.util.GsonUtil;
 import com.lenovo.feizai.parking.util.ToolUtil;
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -123,7 +124,7 @@ public class SubscribeActivity extends BaseActivity {
                                 View view = baseViewHolder.getView(R.id.bg);
                                 if (sSpace > 0 && String.valueOf(sSpace).equals(parkingSpace.getSerialnumber())) {
                                     view.setSelected(true);
-                                }else {
+                                } else {
                                     view.setSelected(false);
                                 }
                                 view.setBackgroundResource(R.drawable.subscribe_space_selector);
@@ -320,7 +321,7 @@ public class SubscribeActivity extends BaseActivity {
             dialog.positiveButton(null, "确认", materialDialog -> {
                 return null;
             });
-            dialog.negativeButton(null, "其他车辆", materialDialog ->{
+            dialog.negativeButton(null, "其他车辆", materialDialog -> {
                 startActivityForResult(EnterCarLicenseActivity.class, 1);
                 return null;
             });
@@ -507,8 +508,39 @@ public class SubscribeActivity extends BaseActivity {
             case 1:
                 if (resultCode == RESULT_OK) {
                     String car = data.getStringExtra("car");
-                    select_car.setText(car);
-                    sCar = car;
+                    RetrofitClient.getInstance(this)
+                            .isSubscribing(merchant, car, new BaseObserver<BaseModel<Boolean>>(this) {
+                                @Override
+                                protected void showDialog() {
+
+                                }
+
+                                @Override
+                                protected void hideDialog() {
+
+                                }
+
+                                @Override
+                                protected void successful(BaseModel<Boolean> booleanBaseModel) {
+                                    if (!booleanBaseModel.getData()) {
+                                        showToast("该车辆已在预约中");
+                                    }
+                                }
+
+                                @Override
+                                protected void defeated(BaseModel<Boolean> booleanBaseModel) {
+                                    if (booleanBaseModel.getData()) {
+                                        select_car.setText(car);
+                                        sCar = car;
+                                    }
+                                }
+
+                                @Override
+                                public void onError(ExceptionHandle.ResponeThrowable e) {
+                                    showToast(e.getMessage());
+                                    Logger.e(e, e.getMessage());
+                                }
+                            });
                 }
                 break;
         }

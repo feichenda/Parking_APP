@@ -389,6 +389,9 @@ public class ManagementActivity extends BaseActivity {
 //                                            intent.putExtra("car", order.getCarLicense());
 //                                            startActivity(intent);
                                                 break;
+                                            case "订单已完成":
+                                                showToast("该订单已完成");
+                                                break;
                                         }
                                     }
 

@@ -87,6 +87,11 @@ public class CheckOutActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.back)
+    public void back() {
+        finish();
+    }
+
     @OnClick(R.id.sure)
     public void sure() {
         if (info.getState() == "已缴费") {
