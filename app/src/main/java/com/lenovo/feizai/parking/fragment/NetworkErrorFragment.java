@@ -92,11 +92,6 @@ public class NetworkErrorFragment extends BaseFragment {
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         promptDialog.dismiss();
-                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                        FragmentManager fragmentmanager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentmanager.beginTransaction();
-                        ft.add(R.id.container, new NetworkErrorFragment());
-                        ft.commit();
                     }
                 });
                 break;
@@ -135,10 +130,6 @@ public class NetworkErrorFragment extends BaseFragment {
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         promptDialog.dismiss();
-                        FragmentManager fragmentmanager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentmanager.beginTransaction();
-                        ft.add(R.id.container, new NetworkErrorFragment());
-                        ft.commit();
                     }
                 });
                 break;
