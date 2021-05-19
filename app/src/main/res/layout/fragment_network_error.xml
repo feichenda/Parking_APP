@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/retry"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="网络丢失了"
-        android:gravity="center"/>
+
     <com.airbnb.lottie.LottieAnimationView
+        android:layout_marginTop="100dp"
         android:id="@+id/animationView"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:lottie_rawRes="@raw/network_error"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="网络跑丢了,点击刷新"
+        android:gravity="center"/>
 
 </LinearLayout>
