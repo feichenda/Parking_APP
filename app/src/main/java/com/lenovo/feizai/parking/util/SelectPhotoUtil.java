@@ -40,7 +40,7 @@ public class SelectPhotoUtil {
                 .loadImageEngine(GlideEngine.createGlideEngine())
                 .selectionMode(PictureConfig.MULTIPLE)//设置为多选模式
                 .maxSelectNum(maxNum<=0?1:maxNum)//设置最大选择图片数
-                .isWeChatStyle(false)//开启微信样式
+                .isWeChatStyle(true)//开启微信样式
                 .isCamera(false)
                 .isAutomaticTitleRecyclerTop(true)
                 .compress(true)
@@ -54,7 +54,7 @@ public class SelectPhotoUtil {
                 .loadImageEngine(GlideEngine.createGlideEngine())
                 .selectionMode(PictureConfig.MULTIPLE)//设置为多选模式
                 .maxSelectNum(maxNum<=0?1:maxNum)//设置最大选择图片数
-                .isWeChatStyle(false)//开启微信样式
+                .isWeChatStyle(true)//开启微信样式
                 .isCamera(false)
                 .isAutomaticTitleRecyclerTop(true)
                 .compress(true)

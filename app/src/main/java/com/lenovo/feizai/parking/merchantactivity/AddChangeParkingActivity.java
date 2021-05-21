@@ -514,34 +514,7 @@ public class AddChangeParkingActivity extends BaseActivity {
         }
 
         PromptDialog promptDialog = new PromptDialog(this);
-        client.addmerchantinfo(GsonUtil.GsonString(parkingInfo), GsonUtil.GsonString(location), GsonUtil.GsonString(rates), GsonUtil.GsonString(parkingNumber), license, image, new BaseObserver<BaseModel>(AddChangeParkingActivity.this) {
-            @Override
-            protected void showDialog() {
-                promptDialog.showLoading("正在注册");
-            }
 
-            @Override
-            protected void hideDialog() {
-
-            }
-
-            @Override
-            protected void successful(BaseModel baseModel) {
-                promptDialog.showSuccess(baseModel.getMessage());
-                finish();
-            }
-
-            @Override
-            protected void defeated(BaseModel baseModel) {
-                promptDialog.showError("注册失败");
-                showToast(baseModel.getMessage());
-            }
-
-            @Override
-            public void onError(ExceptionHandle.ResponeThrowable e) {
-                Log.e("tag2", e.getMessage());
-            }
-        });
     }
 
     @OnClick(R.id.back)
