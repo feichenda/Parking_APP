@@ -60,6 +60,8 @@ import okhttp3.MultipartBody;
  */
 public class AddChangeParkingActivity extends BaseActivity {
 
+    @BindView(R.id.audit_text)
+    EditText audit_text;
     @BindView(R.id.image_number)
     TextView image_number;
     @BindView(R.id.certificate_number)
@@ -104,6 +106,10 @@ public class AddChangeParkingActivity extends BaseActivity {
         client = RetrofitClient.getInstance(this);
 
         mylatlng = null;
+        initRecyclerview();
+    }
+
+    private void initRecyclerview() {
         List<String> photo = new ArrayList<>();
         List<String> certificate = new ArrayList<>();
         photo.add("take");
@@ -557,5 +563,11 @@ public class AddChangeParkingActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 }

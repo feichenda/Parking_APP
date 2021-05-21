@@ -149,6 +149,7 @@ public class MerchantMainActivity extends BaseActivity {
                         startActivity(intent);
                         break;
                     case "未通过":
+                        startActivity(AddChangeParkingActivity.class);
                         break;
                     case "未审核":
                         showToast("您已提交，请等待管理员审核");
