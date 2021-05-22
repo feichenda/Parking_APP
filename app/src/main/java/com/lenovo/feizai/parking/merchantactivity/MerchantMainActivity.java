@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
@@ -27,6 +28,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lenovo.feizai.parking.R;
 import com.lenovo.feizai.parking.activity.LoginAcitivity;
+import com.lenovo.feizai.parking.base.BaseRefreshRecyclerView;
 import com.lenovo.feizai.parking.customeractivity.CustomerSettingActivity;
 import com.lenovo.feizai.parking.base.BaseActivity;
 import com.lenovo.feizai.parking.base.BaseModel;
@@ -44,6 +46,7 @@ import com.lenovo.feizai.parking.net.RequestAPI;
 import com.lenovo.feizai.parking.net.RetrofitClient;
 import com.lenovo.feizai.parking.util.DensityUtil;
 import com.lenovo.feizai.parking.util.ToolUtil;
+import com.orhanobut.logger.Logger;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -66,7 +69,7 @@ public class MerchantMainActivity extends BaseActivity {
 
     private Banner advertising;
 
-    private BaseRecyclerView<MerchantProperty, BaseViewHolder> parking_list;
+    private BaseRefreshRecyclerView parking_list;
     private String username;
     private RetrofitClient client;
     private ImageView avatar_img;
@@ -85,10 +88,9 @@ public class MerchantMainActivity extends BaseActivity {
 
         menu = initMenu();
 
-
-        parking_list = new BaseRecyclerView<MerchantProperty, BaseViewHolder>(this, R.id.parking_list) {
+        parking_list = new BaseRefreshRecyclerView(this,R.id.parking_list,R.id.parking_list_fresh) {
             @Override
-            public BaseQuickAdapter<MerchantProperty, BaseViewHolder> initAdapter() {
+            public BaseQuickAdapter initAdapter() {
                 class ParkingAdapter extends BaseQuickAdapter<MerchantProperty, BaseViewHolder> {
                     private Context context;
 
@@ -156,8 +158,19 @@ public class MerchantMainActivity extends BaseActivity {
                         break;
                     case "未审核":
                         showToast("您已提交，请等待管理员审核");
+                        intent.setClass(MerchantMainActivity.this, SeeParkingInfoActivity.class);
+                        intent.putExtra("name", merchantProperty.getParkingInfo().getMerchantname());
+                        startActivity(intent);
                         break;
                 }
+            }
+        });
+
+        parking_list.addRefreshLisenter(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                parking_list.cleanData();
+                getMerchantInfo();
             }
         });
 
@@ -276,16 +289,20 @@ public class MerchantMainActivity extends BaseActivity {
             protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
                 List<MerchantProperty> datas = merchantPropertyBaseModel.getDatas();
                 parking_list.replaceData(datas);
+                parking_list.refreshEnd();
             }
 
             @Override
             protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
                 showToast("您暂时没有可管理的停车场！");
+                parking_list.refreshEnd();
             }
 
             @Override
             public void onError(ExceptionHandle.ResponeThrowable e) {
-
+                showToast(e.getMessage());
+                Logger.e(e,e.getMessage());
+                parking_list.refreshEnd();
             }
         });
     }

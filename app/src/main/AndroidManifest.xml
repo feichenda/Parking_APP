@@ -131,6 +131,8 @@
 
         <activity android:name=".merchantactivity.AddChangeParkingActivity"></activity>
 
+        <activity android:name=".merchantactivity.SeeParkingInfoActivity"></activity>
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
