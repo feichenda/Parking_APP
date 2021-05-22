@@ -187,7 +187,7 @@ public interface RequestAPI {
 
     @Multipart
     @POST("api/merchant/updateMerchantChange")
-    Observable<BaseModel> updateMerchantChange(@Query("change") String change, @Part MultipartBody.Part[] image);
+    Observable<BaseModel> updateMerchantChange(@Query("oldname") String oldname, @Query("change") String change, @Part MultipartBody.Part[] image);
 
     @GET("api/merchant/selectParkingInfo")
     Observable<BaseModel<ParkingInfo>> selectParkingInfo(@Query("merchant") String merchant);

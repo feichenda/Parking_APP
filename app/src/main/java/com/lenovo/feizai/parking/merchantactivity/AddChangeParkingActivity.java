@@ -226,11 +226,11 @@ public class AddChangeParkingActivity extends BaseActivity {
             }
         }
 
-        PromptDialog promptDialog = new PromptDialog(this);
+        PromptDialog dialog = new PromptDialog(this);
         client.addchengmerchantinfo(oldname, GsonUtil.GsonString(parkingInfo), GsonUtil.GsonString(location), GsonUtil.GsonString(rates), GsonUtil.GsonString(parkingNumber), license, image, new BaseObserver<BaseModel>(this) {
             @Override
             protected void showDialog() {
-
+                dialog.showLoading("正在上传");
             }
 
             @Override
@@ -240,17 +240,20 @@ public class AddChangeParkingActivity extends BaseActivity {
 
             @Override
             protected void successful(BaseModel baseModel) {
+                dialog.showSuccess(baseModel.getMessage());
                 showToast(baseModel.getMessage());
                 finish();
             }
 
             @Override
             protected void defeated(BaseModel baseModel) {
+                dialog.showError(baseModel.getMessage());
                 showToast(baseModel.getMessage());
             }
 
             @Override
             public void onError(ExceptionHandle.ResponeThrowable e) {
+                dialog.dismiss();
                 showToast(e.getMessage());
                 Logger.e(e,e.getMessage());
             }

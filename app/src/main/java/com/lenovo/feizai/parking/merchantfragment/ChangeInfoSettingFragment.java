@@ -76,6 +76,7 @@ public class ChangeInfoSettingFragment extends BaseFragment {
 
     private RetrofitClient client;
     private String merchantname;
+    private String oldname;
     private BaseRecyclerView<String, BaseViewHolder> license_list;
     private List<String> photo;
     private Double latitude;
@@ -112,14 +113,15 @@ public class ChangeInfoSettingFragment extends BaseFragment {
             @Override
             protected void successful(BaseModel<MerchantChange> merchantChangeBaseModel) {
                 MerchantChange merchantChange = merchantChangeBaseModel.getData();
-                name_edit.setText(merchantChange.getNewmerchantname());
+                oldname = merchantChange.getNewmerchantname();
+                name_edit.setText(oldname);
                 address_edit.setText(merchantChange.getMerchantaddress());
                 latitude = merchantChange.getLatitude();
                 longitude = merchantChange.getLongitude();
                 city = merchantChange.getCity();
-                one_price_edit.setText(String.format("%.2f",merchantChange.getOnehour()));
-                orderone_price_edit.setText(String.format("%.2f",merchantChange.getOtherone()));
-                audit_text.setText(merchantChange.getAuditstate()+merchantChange.getRemark());
+                one_price_edit.setText(String.format("%.2f", merchantChange.getOnehour()));
+                orderone_price_edit.setText(String.format("%.2f", merchantChange.getOtherone()));
+                audit_text.setText(merchantChange.getAuditstate() + merchantChange.getRemark());
             }
 
             @Override
@@ -250,7 +252,7 @@ public class ChangeInfoSettingFragment extends BaseFragment {
                     dialog.message(null, "确认删除该照片", dialogMessageSettings -> {
                         return null;
                     });
-                    dialog.positiveButton(null,"确认",materialDialog -> {
+                    dialog.positiveButton(null, "确认", materialDialog -> {
                         license_list.removeData(position);
                         String temp = (String) license_list.getItem(license_list.getItemCount() - 1);
                         if (TextUtils.equals(temp, "take")) {
@@ -261,7 +263,9 @@ public class ChangeInfoSettingFragment extends BaseFragment {
                         }
                         return null;
                     });
-                    dialog.negativeButton(null,"取消",materialDialog -> {return null;});
+                    dialog.negativeButton(null, "取消", materialDialog -> {
+                        return null;
+                    });
                     dialog.show();
                 }
                 return true;
@@ -286,7 +290,7 @@ public class ChangeInfoSettingFragment extends BaseFragment {
     }
 
     @OnClick({R.id.save})
-    public void save(){
+    public void save() {
         String newmerchantname = name_edit.getText().toString().trim();
         String address = address_edit.getText().toString().trim();
         String smallone = one_price_edit.getText().toString().trim();
@@ -297,15 +301,15 @@ public class ChangeInfoSettingFragment extends BaseFragment {
         change.setUsername(ToolUtil.getUsername(getActivity()));
         change.setOldmerchantname(merchantname);
 
-        if (TextUtils.isEmpty(newmerchantname)){
+        if (TextUtils.isEmpty(newmerchantname)) {
             showToast("用户名不能为空");
-        }else {
-            if (TextUtils.isEmpty(address)){
+        } else {
+            if (TextUtils.isEmpty(address)) {
                 showToast("地址不能为空");
-            }else {
-                if (TextUtils.isEmpty(small)||TextUtils.isEmpty(smallone)){
+            } else {
+                if (TextUtils.isEmpty(small) || TextUtils.isEmpty(smallone)) {
                     showToast("价格不能为空");
-                }else {
+                } else {
                     change.setNewmerchantname(newmerchantname);
                     change.setMerchantaddress(address);
                     change.setLatitude(latitude);
@@ -314,7 +318,7 @@ public class ChangeInfoSettingFragment extends BaseFragment {
                     change.setOnehour(Float.valueOf(smallone));
                     change.setOtherone(Float.valueOf(small));
                     change.setAuditstate("未审核");
-                    change.setRemark(audit_text.getText().toString().trim());
+                    change.setRemark(null);
                     List<String> data = license_list.getData();
                     if (data.size() == 1) {
                         showToast("您必须上传最少一张执照");
@@ -328,7 +332,7 @@ public class ChangeInfoSettingFragment extends BaseFragment {
                         }
                     }
                     String json = GsonUtil.GsonString(change);
-                    client.updateMerchantChange(json, parts, new BaseObserver<BaseModel>(getContext()) {
+                    client.updateMerchantChange(oldname, json, parts, new BaseObserver<BaseModel>(getContext()) {
                         @Override
                         protected void showDialog() {
                             dialog.showLoading("正在上传");
@@ -354,7 +358,7 @@ public class ChangeInfoSettingFragment extends BaseFragment {
 
                         @Override
                         public void onError(ExceptionHandle.ResponeThrowable e) {
-                            Logger.e(e,e.getMessage());
+                            Logger.e(e, e.getMessage());
                         }
                     });
                 }
@@ -365,9 +369,9 @@ public class ChangeInfoSettingFragment extends BaseFragment {
     @OnClick(R.id.address_edit)
     public void selectaddress() {
         LatLng latLng = new LatLng(latitude, longitude);
-        Intent intent = new Intent(getActivity(),MapActivity.class);
+        Intent intent = new Intent(getActivity(), MapActivity.class);
         intent.putExtra("mylat", GsonUtil.GsonString(latLng));
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
     }
 
     @Override

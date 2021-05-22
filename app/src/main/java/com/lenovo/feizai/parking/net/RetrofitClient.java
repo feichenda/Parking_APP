@@ -314,8 +314,8 @@ public class RetrofitClient {
         api.isMerchantChange(oldname).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
 
-    public void updateMerchantChange(String json, MultipartBody.Part[] parts, Observer<?> observer) {
-        api.updateMerchantChange(json, parts).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+    public void updateMerchantChange(String oldname, String json, MultipartBody.Part[] parts, Observer<?> observer) {
+        api.updateMerchantChange(oldname, json, parts).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
 
     public void selectParkingInfo(String merchant, Observer<?> observer) {
