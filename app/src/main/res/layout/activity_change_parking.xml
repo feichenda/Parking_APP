@@ -23,16 +23,23 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/back"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:text="添加停车场信息" />
 
-        <ImageView
+        <TextView
             android:id="@+id/sure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="10dp"
-            android:src="@mipmap/sure" />
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bg_button"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            android:text="提交" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -76,9 +83,9 @@
                     android:background="@null"
                     android:enabled="false"
                     android:hint="当前审核状态"
+                    android:textSize="16sp"
                     android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:textSize="16sp" />
+                    android:paddingRight="2dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -110,6 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:hint="停车场的名字"
+                    android:textSize="16sp"
                     android:layout_toRightOf="@id/name_title" />
             </RelativeLayout>
 
@@ -148,7 +156,9 @@
                     android:layout_centerVertical="true"
                     android:clickable="true"
                     android:hint="点击选择地址"
+                    android:textSize="16sp"
                     android:focusableInTouchMode="false"
+                    android:textColor="@color/color_2196F3"
                     android:layout_toRightOf="@id/address_title" />
                 </RelativeLayout>
 
@@ -184,6 +194,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:hint="停车位数量"
+                    android:textSize="16sp"
                     android:layout_toRightOf="@id/number_title" />
             </RelativeLayout>
 
@@ -323,6 +334,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:inputType="phone"
+                    android:textSize="16sp"
                     android:layout_toRightOf="@id/qq_title" />
 
             </RelativeLayout>
@@ -355,6 +367,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:textSize="16sp"
                     android:layout_toRightOf="@id/linkman_title" />
 
             </RelativeLayout>
@@ -388,6 +401,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:inputType="phone"
+                    android:textSize="16sp"
                     android:layout_toRightOf="@id/phone_title" />
 
             </RelativeLayout>

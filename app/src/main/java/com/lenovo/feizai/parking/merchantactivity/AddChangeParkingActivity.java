@@ -32,6 +32,8 @@ import com.lenovo.feizai.parking.base.BaseRecyclerView;
 import com.lenovo.feizai.parking.dialog.OptionDialog;
 import com.lenovo.feizai.parking.dialog.ShowPhotoDialog;
 import com.lenovo.feizai.parking.entity.Location;
+import com.lenovo.feizai.parking.entity.MerchantProperty;
+import com.lenovo.feizai.parking.entity.MerchantState;
 import com.lenovo.feizai.parking.entity.ParkingInfo;
 import com.lenovo.feizai.parking.entity.ParkingNumber;
 import com.lenovo.feizai.parking.entity.Rates;
@@ -45,6 +47,7 @@ import com.lenovo.feizai.parking.util.ToolUtil;
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +87,7 @@ public class AddChangeParkingActivity extends BaseActivity {
     EditText phone_edit;
     private String city;
     private String username;
+    private String oldname;
     private LatLng mylatlng;
     private Double latitude;
     private Double longitude;
@@ -98,8 +102,9 @@ public class AddChangeParkingActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        SharedPreferences preferences = getSharedPreferences("userdata", Context.MODE_PRIVATE);
-        username = preferences.getString("username", "");
+        Intent intent = getIntent();
+        String merchantname = intent.getStringExtra("name");
+        username = ToolUtil.getUsername(this);
         InputFilter[] filters = {new PriceInputFilter()};
         one_price_edit.setFilters(filters);
         orderone_price_edit.setFilters(filters);
@@ -107,6 +112,221 @@ public class AddChangeParkingActivity extends BaseActivity {
 
         mylatlng = null;
         initRecyclerview();
+        initDate(merchantname);
+    }
+
+    @OnClick(R.id.i)
+    public void i() {
+        MaterialDialog dialog = new MaterialDialog(AddChangeParkingActivity.this, MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.title(null, "提示");
+        dialog.message(null, "执照包括：营业执照，收费许可证等", null);
+        dialog.positiveButton(null, "确认", materialDialog -> {
+            return null;
+        });
+        dialog.show();
+    }
+
+    @OnClick(R.id.address_edit)
+    public void address_edit() {
+        if (mylatlng != null) {
+            Intent intent = new Intent(AddChangeParkingActivity.this, MapActivity.class);
+            intent.putExtra("mylat", GsonUtil.GsonString(mylatlng));
+            startActivityForResult(intent, 1);
+        } else {
+            startActivityForResult(MapActivity.class, 1);
+        }
+    }
+
+    @OnClick(R.id.sure)
+    public void sure() {
+        String parking_name = name_edit.getText().toString().trim();
+        String parking_address = address_edit.getText().toString().trim();
+        String parking_number = number.getText().toString().trim();
+        String parking_one_price_edit = one_price_edit.getText().toString().trim();
+        String parking_orderone_price_edit = orderone_price_edit.getText().toString().trim();
+        String parking_qq_edit = qq_edit.getText().toString().trim();
+        String parking_linkman_edit = linkman_edit.getText().toString().trim();
+        String parking_phone_edit = phone_edit.getText().toString().trim();
+
+        if (TextUtils.isEmpty(parking_name)) {
+            showToast("商家名不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(parking_address)) {
+            showToast("地址不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(parking_number)) {
+            showToast("车位数量不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(parking_one_price_edit) || TextUtils.isEmpty(parking_orderone_price_edit)) {
+            showToast("单价不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(parking_qq_edit)) {
+            showToast("联系QQ不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(parking_linkman_edit)) {
+            showToast("联系人不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(parking_phone_edit)) {
+            showToast("联系电话不能为空");
+            return;
+        }else {
+            if (!ToolUtil.checkMobileNumber(parking_phone_edit)) {
+                showToast("请输入正确的电话号码");
+                return;
+            }
+        }
+
+        ParkingInfo parkingInfo = new ParkingInfo();
+        Location location = new Location();
+        Rates rates = new Rates();
+        ParkingNumber parkingNumber = new ParkingNumber();
+        parkingInfo.setUsername(username);
+        parkingInfo.setMerchantname(parking_name);
+        parkingInfo.setMerchantaddress(parking_address);
+        parkingInfo.setMerchantimage(null);
+        parkingInfo.setBusinesslicense(null);
+        parkingInfo.setPhone(parking_phone_edit);
+        parkingInfo.setLinkman(parking_linkman_edit);
+        parkingInfo.setQQ(parking_qq_edit);
+        location.setMerchantname(parking_name);
+        location.setCity(city);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        rates.setMerchantname(parking_name);
+        rates.setOnehour(Float.valueOf(parking_one_price_edit));
+        rates.setOtherone(Float.valueOf(parking_orderone_price_edit));
+        parkingNumber.setMerchantname(parking_name);
+        parkingNumber.setAllnumber(Integer.valueOf(parking_number));
+
+
+        List<String> cl = certificate_list.getData();
+        List<String> pl = photo_list.getData();
+        if (cl.size() == 1 || pl.size() == 1) {
+            showToast("您必须上传最少一张执照和停车场图片");
+            return;
+        }
+        MultipartBody.Part[] license = new MultipartBody.Part[3];
+        MultipartBody.Part[] image = new MultipartBody.Part[3];
+        for (int i = 0; i < cl.size(); i++) {
+            if (!cl.get(i).equals("take")) {
+                MultipartBody.Part file = FileUtil.getFile(cl.get(i), "license");
+                license[i] = file;
+            }
+        }
+        for (int i = 0; i < pl.size(); i++) {
+            if (!pl.get(i).equals("take")) {
+                MultipartBody.Part file = FileUtil.getFile(pl.get(i), "image");
+                image[i] = file;
+            }
+        }
+
+        PromptDialog promptDialog = new PromptDialog(this);
+        client.addchengmerchantinfo(oldname, GsonUtil.GsonString(parkingInfo), GsonUtil.GsonString(location), GsonUtil.GsonString(rates), GsonUtil.GsonString(parkingNumber), license, image, new BaseObserver<BaseModel>(this) {
+            @Override
+            protected void showDialog() {
+
+            }
+
+            @Override
+            protected void hideDialog() {
+
+            }
+
+            @Override
+            protected void successful(BaseModel baseModel) {
+                showToast(baseModel.getMessage());
+                finish();
+            }
+
+            @Override
+            protected void defeated(BaseModel baseModel) {
+                showToast(baseModel.getMessage());
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                showToast(e.getMessage());
+                Logger.e(e,e.getMessage());
+            }
+        });
+    }
+
+    @OnClick(R.id.back)
+    public void back() {
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    mylatlng = GsonUtil.GsonToBean(data.getStringExtra("latlng"), LatLng.class);
+                    latitude = mylatlng.latitude;
+                    longitude = mylatlng.longitude;
+                    address_edit.setText(GsonUtil.GsonToBean(data.getStringExtra("result"), ReverseGeoCodeResult.class).getAddress());
+                    city = GsonUtil.GsonToBean(data.getStringExtra("result"), ReverseGeoCodeResult.class).getAddressDetail().city;
+                }
+                break;
+        }
+    }
+
+    private void initDate(String name) {
+        client.selectParkingInfoByName(name, new BaseObserver<BaseModel<MerchantProperty>>(this) {
+            @Override
+            protected void showDialog() {
+
+            }
+
+            @Override
+            protected void hideDialog() {
+
+            }
+
+            @Override
+            protected void successful(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                MerchantProperty property = merchantPropertyBaseModel.getData();
+                ParkingInfo parkingInfo = property.getParkingInfo();
+                Location location = property.getLocation();
+                MerchantState merchantState = property.getMerchantState();
+                ParkingNumber parkingNumber = property.getParkingNumber();
+                Rates rates = property.getRates();
+                audit_text.setText(merchantState.getAuditstate()+merchantState.getRemark());
+                oldname = parkingInfo.getMerchantname();
+                name_edit.setText(oldname);
+                address_edit.setText(parkingInfo.getMerchantaddress());
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                city = location.getCity();
+                number.setText(String.valueOf(parkingNumber.getAllnumber()));
+                one_price_edit.setText(String.format("%.2f",rates.getOnehour()));
+                orderone_price_edit.setText(String.format("%.2f",rates.getOtherone()));
+                qq_edit.setText(parkingInfo.getQQ());
+                phone_edit.setText(parkingInfo.getPhone());
+                linkman_edit.setText(parkingInfo.getLinkman());
+                mylatlng = new LatLng(latitude, longitude);
+            }
+
+            @Override
+            protected void defeated(BaseModel<MerchantProperty> merchantPropertyBaseModel) {
+                showToast(merchantPropertyBaseModel.getMessage());
+                finish();
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                showToast(e.getMessage());
+                Logger.e(e,e.getMessage());
+                finish();
+            }
+        });
     }
 
     private void initRecyclerview() {
@@ -400,147 +620,5 @@ public class AddChangeParkingActivity extends BaseActivity {
                 return true;
             }
         });
-    }
-
-    @OnClick(R.id.i)
-    public void i() {
-        MaterialDialog dialog = new MaterialDialog(AddChangeParkingActivity.this, MaterialDialog.getDEFAULT_BEHAVIOR());
-        dialog.title(null, "提示");
-        dialog.message(null, "执照包括：营业执照，收费许可证等", null);
-        dialog.positiveButton(null, "确认", materialDialog -> {
-            return null;
-        });
-        dialog.show();
-    }
-
-    @OnClick(R.id.address_edit)
-    public void address_edit() {
-        if (mylatlng != null) {
-            Intent intent = new Intent(AddChangeParkingActivity.this, MapActivity.class);
-            intent.putExtra("mylat", GsonUtil.GsonString(mylatlng));
-            startActivityForResult(intent, 1);
-        } else {
-            startActivityForResult(MapActivity.class, 1);
-        }
-    }
-
-    @OnClick(R.id.sure)
-    public void sure() {
-        String parking_name = name_edit.getText().toString().trim();
-        String parking_address = address_edit.getText().toString().trim();
-        String parking_number = number.getText().toString().trim();
-        String parking_one_price_edit = one_price_edit.getText().toString().trim();
-        String parking_orderone_price_edit = orderone_price_edit.getText().toString().trim();
-        String parking_qq_edit = qq_edit.getText().toString().trim();
-        String parking_linkman_edit = linkman_edit.getText().toString().trim();
-        String parking_phone_edit = phone_edit.getText().toString().trim();
-
-        if (TextUtils.isEmpty(parking_name)) {
-            showToast("商家名不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(parking_address)) {
-            showToast("地址不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(parking_number)) {
-            showToast("车位数量不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(parking_one_price_edit) || TextUtils.isEmpty(parking_orderone_price_edit)) {
-            showToast("单价不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(parking_qq_edit)) {
-            showToast("联系QQ不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(parking_linkman_edit)) {
-            showToast("联系人不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(parking_phone_edit)) {
-            showToast("联系电话不能为空");
-            return;
-        }else {
-            if (!ToolUtil.checkMobileNumber(parking_phone_edit)) {
-                showToast("请输入正确的电话号码");
-                return;
-            }
-        }
-
-        ParkingInfo parkingInfo = new ParkingInfo();
-        Location location = new Location();
-        Rates rates = new Rates();
-        ParkingNumber parkingNumber = new ParkingNumber();
-        parkingInfo.setUsername(username);
-        parkingInfo.setMerchantname(parking_name);
-        parkingInfo.setMerchantaddress(parking_address);
-        parkingInfo.setMerchantimage(null);
-        parkingInfo.setBusinesslicense(null);
-        parkingInfo.setPhone(parking_phone_edit);
-        parkingInfo.setLinkman(parking_linkman_edit);
-        parkingInfo.setQQ(parking_qq_edit);
-        location.setMerchantname(parking_name);
-        location.setCity(city);
-        location.setLatitude(latitude);
-        location.setLongitude(longitude);
-        rates.setMerchantname(parking_name);
-        rates.setOnehour(Float.valueOf(parking_one_price_edit));
-        rates.setOtherone(Float.valueOf(parking_orderone_price_edit));
-        parkingNumber.setMerchantname(parking_name);
-        parkingNumber.setAllnumber(Integer.valueOf(parking_number));
-
-
-        List<String> cl = certificate_list.getData();
-        List<String> pl = photo_list.getData();
-        if (cl.size() == 1 || pl.size() == 1) {
-            showToast("您必须上传最少一张执照和停车场图片");
-            return;
-        }
-        MultipartBody.Part[] license = new MultipartBody.Part[3];
-        MultipartBody.Part[] image = new MultipartBody.Part[3];
-        for (int i = 0; i < cl.size(); i++) {
-            if (!cl.get(i).equals("take")) {
-                MultipartBody.Part file = FileUtil.getFile(cl.get(i), "license");
-                license[i] = file;
-            }
-        }
-        for (int i = 0; i < pl.size(); i++) {
-            if (!pl.get(i).equals("take")) {
-                MultipartBody.Part file = FileUtil.getFile(pl.get(i), "image");
-                image[i] = file;
-            }
-        }
-
-        PromptDialog promptDialog = new PromptDialog(this);
-
-    }
-
-    @OnClick(R.id.back)
-    public void back() {
-        finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    mylatlng = GsonUtil.GsonToBean(data.getStringExtra("latlng"), LatLng.class);
-                    latitude = mylatlng.latitude;
-                    longitude = mylatlng.longitude;
-                    address_edit.setText(GsonUtil.GsonToBean(data.getStringExtra("result"), ReverseGeoCodeResult.class).getAddress());
-                    city = GsonUtil.GsonToBean(data.getStringExtra("result"), ReverseGeoCodeResult.class).getAddressDetail().city;
-                }
-                break;
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
     }
 }

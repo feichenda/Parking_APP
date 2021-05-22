@@ -117,8 +117,8 @@ public class ChangeInfoSettingFragment extends BaseFragment {
                 latitude = merchantChange.getLatitude();
                 longitude = merchantChange.getLongitude();
                 city = merchantChange.getCity();
-                one_price_edit.setText(String.valueOf(merchantChange.getOnehour()));
-                orderone_price_edit.setText(String.valueOf(merchantChange.getOtherone()));
+                one_price_edit.setText(String.format("%.2f",merchantChange.getOnehour()));
+                orderone_price_edit.setText(String.format("%.2f",merchantChange.getOtherone()));
                 audit_text.setText(merchantChange.getAuditstate()+merchantChange.getRemark());
             }
 
@@ -368,11 +368,6 @@ public class ChangeInfoSettingFragment extends BaseFragment {
         Intent intent = new Intent(getActivity(),MapActivity.class);
         intent.putExtra("mylat", GsonUtil.GsonString(latLng));
         startActivityForResult(intent,1);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override

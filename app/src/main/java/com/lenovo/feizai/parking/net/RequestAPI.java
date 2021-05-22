@@ -236,5 +236,12 @@ public interface RequestAPI {
 
     @GET("api/subscribe/isSubscribing")
     Observable<BaseModel<Boolean>> isSubscribing(@Query("merchantname") String merchantname, @Query("car") String car);
+
+    @GET("api/merchant/selectParkingInfoByName")
+    Observable<BaseModel<MerchantProperty>> selectParkingInfoByName(@Query("merchantname") String merchantname);
+
+    @Multipart
+    @POST("api/merchant/addchengmerchantinfo")
+    Observable<BaseModel> addchengmerchantinfo(@Query("oldname") String oldname, @Query("merchant_str") String merchant_str, @Query("location_str") String location_str, @Query("rates_str") String rates_str, @Query("parkingnumber_str") String parkingnumber_str, @Part MultipartBody.Part[] license, @Part MultipartBody.Part[] image);
 }
 

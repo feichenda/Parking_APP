@@ -117,8 +117,8 @@ public class AddInfoSettingFragment extends BaseFragment {
                 latitude = merchantProperty.getLocation().getLatitude();
                 longitude = merchantProperty.getLocation().getLongitude();
                 city = merchantProperty.getLocation().getCity();
-                one_price_edit.setText(String.valueOf(merchantProperty.getRates().getOnehour()));
-                orderone_price_edit.setText(String.valueOf(merchantProperty.getRates().getOtherone()));
+                one_price_edit.setText(String.format("%.2f",merchantProperty.getRates().getOnehour()));
+                orderone_price_edit.setText(String.format("%.2f",merchantProperty.getRates().getOtherone()));
             }
 
             @Override

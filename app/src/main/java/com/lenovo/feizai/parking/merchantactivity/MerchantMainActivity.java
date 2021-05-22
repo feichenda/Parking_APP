@@ -142,14 +142,17 @@ public class MerchantMainActivity extends BaseActivity {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 MerchantProperty merchantProperty = (MerchantProperty) adapter.getItem(position);
+                Intent intent = new Intent();
                 switch (merchantProperty.getMerchantState().getAuditstate()) {
                     case "已通过":
-                        Intent intent = new Intent(MerchantMainActivity.this, ManagementActivity.class);
+                        intent.setClass(MerchantMainActivity.this, ManagementActivity.class);
                         intent.putExtra("name", merchantProperty.getParkingInfo().getMerchantname());
                         startActivity(intent);
                         break;
                     case "未通过":
-                        startActivity(AddChangeParkingActivity.class);
+                        intent.setClass(MerchantMainActivity.this, AddChangeParkingActivity.class);
+                        intent.putExtra("name", merchantProperty.getParkingInfo().getMerchantname());
+                        startActivity(intent);
                         break;
                     case "未审核":
                         showToast("您已提交，请等待管理员审核");

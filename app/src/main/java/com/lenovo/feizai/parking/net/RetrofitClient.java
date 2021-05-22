@@ -381,4 +381,12 @@ public class RetrofitClient {
     public void isSubscribing(String name, String car, Observer<?> observer) {
         api.isSubscribing(name, car).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
     }
+
+    public void selectParkingInfoByName(String name, Observer<?> observer) {
+        api.selectParkingInfoByName(name).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+    }
+
+    public void addchengmerchantinfo(String oldname, String merchant, String location, String rates, String parkingnumber, MultipartBody.Part[] license, MultipartBody.Part[] image, Observer<?> observer) {
+        api.addchengmerchantinfo(oldname, merchant, location, rates, parkingnumber, license, image).compose(schedulersTransformer).onErrorResumeNext(new HttpResponseFunc<>()).subscribe(observer);
+    }
 }
