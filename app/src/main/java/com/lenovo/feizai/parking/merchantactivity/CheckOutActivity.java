@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.lenovo.feizai.parking.R;
 import com.lenovo.feizai.parking.base.BaseActivity;
@@ -131,34 +132,43 @@ public class CheckOutActivity extends BaseActivity {
 
     @OnClick(R.id.money)
     public void money() {//现金缴费
-        info.setOrdernumber(new UniqueOrderGenerateUtil(0,0).getId());
-        client.updatePayByMoney(info, new BaseObserver<BaseModel>(this) {
-            @Override
-            protected void showDialog() {
+        MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.message(null, "确认支付", null);
+        dialog.positiveButton(null, "确认", materialDialog -> {
+            info.setOrdernumber(new UniqueOrderGenerateUtil(0,0).getId());
+            client.updatePayByMoney(info, new BaseObserver<BaseModel>(this) {
+                @Override
+                protected void showDialog() {
 
-            }
+                }
 
-            @Override
-            protected void hideDialog() {
+                @Override
+                protected void hideDialog() {
 
-            }
+                }
 
-            @Override
-            protected void successful(BaseModel baseModel) {
-                money.setEnabled(false);
-                showToast(baseModel.getMessage());
-                finish();
-            }
+                @Override
+                protected void successful(BaseModel baseModel) {
+                    money.setEnabled(false);
+                    showToast(baseModel.getMessage());
+                    finish();
+                }
 
-            @Override
-            protected void defeated(BaseModel baseModel) {
-                showToast(baseModel.getMessage());
-            }
+                @Override
+                protected void defeated(BaseModel baseModel) {
+                    showToast(baseModel.getMessage());
+                }
 
-            @Override
-            public void onError(ExceptionHandle.ResponeThrowable e) {
-                showToast(e.getMessage());
-            }
+                @Override
+                public void onError(ExceptionHandle.ResponeThrowable e) {
+                    showToast(e.getMessage());
+                }
+            });
+            return null;
         });
+        dialog.negativeButton(null, "取消", materialDialog ->{
+            return null;
+        });
+        dialog.show();
     }
 }
