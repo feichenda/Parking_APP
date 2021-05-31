@@ -98,6 +98,7 @@ public class ParkingSettingActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void getData(MessageEvent event) {
         loadFragment(event.getGo());
+        event.setGo("");
     }
 
     @Override
