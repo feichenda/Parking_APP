@@ -98,7 +98,7 @@ public class RetrofitClient {
             mContext = context;
         if (url != null)
             mUrl = url;
-        return RetrofitClientHolder.sInstance;
+        return new RetrofitClient(context, url,null);
     }
 
     public static RetrofitClient getInstance(Context context, String url, Map<String, String> headers) {
@@ -108,7 +108,7 @@ public class RetrofitClient {
             mUrl = url;
         if (headers != null)
             mHeaders = headers;
-        return RetrofitClientHolder.sInstance;
+        return new RetrofitClient(context, url,headers);
     }
 
     private static class RetrofitClientHolder {
