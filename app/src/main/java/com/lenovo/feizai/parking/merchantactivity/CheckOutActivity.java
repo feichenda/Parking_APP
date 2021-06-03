@@ -22,6 +22,11 @@ import com.lenovo.feizai.parking.util.EncodingUtils;
 import com.lenovo.feizai.parking.util.GsonUtil;
 import com.lenovo.feizai.parking.util.ToolUtil;
 import com.lenovo.feizai.parking.util.UniqueOrderGenerateUtil;
+import com.orhanobut.logger.Logger;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,6 +58,7 @@ public class CheckOutActivity extends BaseActivity {
     private String car;
     private RetrofitClient client;
     private CheckInfo info;
+    private Timer timer;
 
     public CheckOutActivity() {
         super(R.layout.activity_checkout);
@@ -63,18 +69,18 @@ public class CheckOutActivity extends BaseActivity {
         Intent intent = getIntent();
         car = intent.getStringExtra("car");
         merchantname = intent.getStringExtra("merchant");
-        info = GsonUtil.GsonToBean(intent.getStringExtra("info"),CheckInfo.class);
+        info = GsonUtil.GsonToBean(intent.getStringExtra("info"), CheckInfo.class);
         client = RetrofitClient.getInstance(this);
         merchant.setText(merchantname);
         license.setText(car);
         space.setText(info.getSerialnumber());
         intime.setText(info.getIntime());
         outtime.setText(info.getOuttime());
-        price.setText(info.getPrice()+"元");
+        price.setText(info.getPrice() + "元");
         if (info.getState() == "已缴费") {
             money.setVisibility(View.GONE);
             payCode.setVisibility(View.GONE);
-        }else {
+        } else {
             Bitmap qrCode = EncodingUtils.createQRCode(GsonUtil.GsonString(info), 500, 500, null);
             Glide.with(CheckOutActivity.this).load(qrCode).override(500, 500).into(payCode);
             payCode.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +92,14 @@ public class CheckOutActivity extends BaseActivity {
                 }
             });
         }
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                getData();
+            }
+        };
+        timer.schedule(task, new Date(), 1000 * 60);
     }
 
     @OnClick(R.id.back)
@@ -135,7 +149,7 @@ public class CheckOutActivity extends BaseActivity {
         MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
         dialog.message(null, "确认支付", null);
         dialog.positiveButton(null, "确认", materialDialog -> {
-            info.setOrdernumber(new UniqueOrderGenerateUtil(0,0).getId());
+            info.setOrdernumber(new UniqueOrderGenerateUtil(0, 0).getId());
             client.updatePayByMoney(info, new BaseObserver<BaseModel>(this) {
                 @Override
                 protected void showDialog() {
@@ -166,9 +180,71 @@ public class CheckOutActivity extends BaseActivity {
             });
             return null;
         });
-        dialog.negativeButton(null, "取消", materialDialog ->{
+        dialog.negativeButton(null, "取消", materialDialog -> {
             return null;
         });
         dialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
+
+    private void getData() {
+        client.selectCheckInfoByCar(merchantname, car, new BaseObserver<BaseModel<CheckInfo>>(this) {
+            @Override
+            protected void showDialog() {
+
+            }
+
+            @Override
+            protected void hideDialog() {
+
+            }
+
+            @Override
+            protected void successful(BaseModel<CheckInfo> checkInfoBaseModel) {
+                switch (checkInfoBaseModel.getMessage()) {
+                    case "未缴费":
+                        CheckInfo info = checkInfoBaseModel.getData();
+                        merchant.setText(merchantname);
+                        license.setText(car);
+                        space.setText(info.getSerialnumber());
+                        intime.setText(info.getIntime());
+                        outtime.setText(info.getOuttime());
+                        price.setText(info.getPrice() + "元");
+                        if (info.getState() == "已缴费") {
+                            money.setVisibility(View.GONE);
+                            payCode.setVisibility(View.GONE);
+                        } else {
+                            Bitmap qrCode = EncodingUtils.createQRCode(GsonUtil.GsonString(info), 500, 500, null);
+                            Glide.with(CheckOutActivity.this).load(qrCode).override(500, 500).into(payCode);
+                            payCode.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ShowPhotoDialog dialog = new ShowPhotoDialog(CheckOutActivity.this);
+                                    dialog.setPhoto(qrCode);
+                                    dialog.show();
+                                }
+                            });
+                        }
+                        break;
+                }
+
+            }
+
+            @Override
+            protected void defeated(BaseModel<CheckInfo> checkInfoBaseModel) {
+                showToast("未查询到该车辆");
+                timer.cancel();
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                Logger.e(e, e.getMessage());
+            }
+        });
     }
 }
