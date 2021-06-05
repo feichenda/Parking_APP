@@ -248,41 +248,6 @@ public class CustomerMainActivity extends BaseLocationActivity{
         Location location = new Location();
         location.setLatitude(position.latitude);
         location.setLongitude(position.longitude);
-        /*client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
-            @Override
-            protected void showDialog() {
-
-            }
-
-            @Override
-            protected void hideDialog() {
-
-            }
-
-            @Override
-            protected void successful(BaseModel<Location> locationBaseModel) {
-                List<Location> datas = locationBaseModel.getDatas();
-                for (Location parking : datas) {
-                    LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
-                    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
-                    OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
-                    baiduMap.addOverlay(option);
-                }
-                recyclerview.replaceData(datas);
-            }
-
-            @Override
-            protected void defeated(BaseModel<Location> locationBaseModel) {
-                Toast.makeText(CustomerMainActivity.this, "你所选地点附近暂无停车场", Toast.LENGTH_SHORT).show();
-                recyclerview.cleanData();
-            }
-
-            @Override
-            public void onError(ExceptionHandle.ResponeThrowable e) {
-
-            }
-        });*/
-
         client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
             @Override
             protected void showDialog() {
@@ -388,45 +353,6 @@ public class CustomerMainActivity extends BaseLocationActivity{
             setMapOverlay(home, R.mipmap.my_position);
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(home);//设置经纬度
             baiduMap.animateMapStatus(update);//地图移动到设定位置
-            /*client.searchParking(location, new BaseObserver<BaseModel<Location>>(CustomerMainActivity.this) {
-                @Override
-                protected void showDialog() {
-
-                }
-
-                @Override
-                protected void hideDialog() {
-
-                }
-
-                @Override
-                protected void successful(BaseModel<Location> locationBaseModel) {
-                    List<Location> parkings = locationBaseModel.getDatas();
-                    for (Location parking : parkings) {
-                        LatLng lng = new LatLng(parking.getLatitude(), parking.getLongitude());
-                        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.p);
-                        OverlayOptions option = new MarkerOptions().position(lng).icon(bitmap);
-                        baiduMap.addOverlay(option);
-                    }
-                    MapStatus.Builder builder = new MapStatus.Builder();
-                    builder.zoom(15.0f);
-                    baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-                    datas = parkings;
-                    recyclerview.replaceData(datas);
-                    Log.e("tag", parkings.toString());
-                }
-
-                @Override
-                protected void defeated(BaseModel<Location> locationBaseModel) {
-                    recyclerview.cleanData();
-                    showToast("您附近暂无停车场");
-                }
-
-                @Override
-                public void onError(ExceptionHandle.ResponeThrowable e) {
-
-                }
-            });*/
             client.searchParking(location, new BaseObserver<BaseModel<MerchantProperty>>(CustomerMainActivity.this) {
                 @Override
                 protected void showDialog() {
@@ -597,6 +523,7 @@ public class CustomerMainActivity extends BaseLocationActivity{
 
             @Override
             public void onError(ExceptionHandle.ResponeThrowable e) {
+                showToast(e.getMessage());
             }
         });
 

@@ -150,7 +150,7 @@ public class ChangePasswordFragment extends BaseFragment {
             showToast("两次输入的密码不一致");
             return;
         }
-        if (newpass.length() > 0 || renewpass.length() > 0) {
+        if (newpass.length() < 6 || renewpass.length() < 6) {
             showToast("密码长度不能小于6位");
             return;
         }
