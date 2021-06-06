@@ -25,15 +25,15 @@
                     android:padding="10dp"
                     android:src="@mipmap/back" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="进行中"
-                    android:padding="10dp"
-                    android:textColor="#03A9F4"
-                    android:visibility="gone"
-                    android:id="@+id/ing" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:text="进行中"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:textColor="#03A9F4"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:id="@+id/ing" />-->
 
             </RelativeLayout>
 

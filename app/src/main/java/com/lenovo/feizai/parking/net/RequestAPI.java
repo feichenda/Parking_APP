@@ -41,8 +41,8 @@ public interface RequestAPI {
 //    public final static String baseURL = "http://192.168.43.183:8080/Parking_war/";
 //    public final static String baseImageURL = "http://192.168.43.183:8080/";
 
-//    public final static String baseURL = "http://192.168.42.185:8080/Parking_war/";
-//    public final static String baseImageURL = "http://192.168.42.185:8080/";
+//    public final static String baseURL = "http://192.168.42.2:8080/Parking_war/";
+//    public final static String baseImageURL = "http://192.168.42.2:8080/";
 
     @POST("api/user/login")
     Observable<BaseModel> login(@Body User user);

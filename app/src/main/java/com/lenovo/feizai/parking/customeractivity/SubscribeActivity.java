@@ -66,8 +66,8 @@ public class SubscribeActivity extends BaseActivity {
     TextView merchantname;
     @BindView(R.id.select_car)
     TextView select_car;
-    @BindView(R.id.ing)
-    TextView ing;
+//    @BindView(R.id.ing)
+//    TextView ing;
 
     private String merchant;
     private String username;
@@ -347,48 +347,48 @@ public class SubscribeActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.ing)
-    public void ing() {
-        flag = true;
-        class orderAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-            private Context context;
-
-            public orderAdapter(Context context, @Nullable List<String> data) {
-                super(R.layout.order_item, data);
-            }
-
-            @Override
-            protected void convert(@NotNull BaseViewHolder baseViewHolder, String s) {
-                Order order = GsonUtil.GsonToBean(s, Order.class);
-                baseViewHolder.setText(R.id.merchant, "车牌号:" + order.getCarLicense());
-                baseViewHolder.setText(R.id.ordertime, "结束时间:" + order.getEndDate().toString());
-                baseViewHolder.setVisible(R.id.price, false);
-            }
-        }
-        List<String> cars = new ArrayList<>();
-        if (orderList.size() > 0) {
-            for (String s : orderList) {
-                cars.add(GsonUtil.GsonToBean(s, Order.class).getCarLicense());
-            }
-            MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
-            dialog.title(null, "选择您要延长预约的车辆");
-            DialogSingleChoiceExtKt.listItemsSingleChoice(dialog, null, cars, null, -1, true, (materialDialog, which, text) -> {
-                String s = orderList.get(which);
-                order = GsonUtil.GsonToBean(s, Order.class);
-                sSpace = Integer.valueOf(order.getSpace());
-                subscribe_table.notifyDataSetChanged();
-                isIng = true;
-                sCar = TextUtils.isEmpty(text) ? "" : text.toString();
-                select_car.setText(TextUtils.isEmpty(text) ? "选择车辆" : text);
-                select_car.setEnabled(false);
-                return null;
-            });
-            dialog.positiveButton(null, "确认", materialDialog -> {
-                return null;
-            });
-            dialog.show();
-        }
-    }
+//    @OnClick(R.id.ing)
+//    public void ing() {
+//        flag = true;
+//        class orderAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+//            private Context context;
+//
+//            public orderAdapter(Context context, @Nullable List<String> data) {
+//                super(R.layout.order_item, data);
+//            }
+//
+//            @Override
+//            protected void convert(@NotNull BaseViewHolder baseViewHolder, String s) {
+//                Order order = GsonUtil.GsonToBean(s, Order.class);
+//                baseViewHolder.setText(R.id.merchant, "车牌号:" + order.getCarLicense());
+//                baseViewHolder.setText(R.id.ordertime, "结束时间:" + order.getEndDate().toString());
+//                baseViewHolder.setVisible(R.id.price, false);
+//            }
+//        }
+//        List<String> cars = new ArrayList<>();
+//        if (orderList.size() > 0) {
+//            for (String s : orderList) {
+//                cars.add(GsonUtil.GsonToBean(s, Order.class).getCarLicense());
+//            }
+//            MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+//            dialog.title(null, "选择您要延长预约的车辆");
+//            DialogSingleChoiceExtKt.listItemsSingleChoice(dialog, null, cars, null, -1, true, (materialDialog, which, text) -> {
+//                String s = orderList.get(which);
+//                order = GsonUtil.GsonToBean(s, Order.class);
+//                sSpace = Integer.valueOf(order.getSpace());
+//                subscribe_table.notifyDataSetChanged();
+//                isIng = true;
+//                sCar = TextUtils.isEmpty(text) ? "" : text.toString();
+//                select_car.setText(TextUtils.isEmpty(text) ? "选择车辆" : text);
+//                select_car.setEnabled(false);
+//                return null;
+//            });
+//            dialog.positiveButton(null, "确认", materialDialog -> {
+//                return null;
+//            });
+//            dialog.show();
+//        }
+//    }
 
     private void getCarInfo() {
         retrofitClient.selectFreeCarByUsername(username, new BaseObserver<BaseModel<String>>(this) {
@@ -472,33 +472,33 @@ public class SubscribeActivity extends BaseActivity {
         });
         getCarInfo();
 
-        retrofitClient.selectIngOrderByUser(username, new BaseObserver<BaseModel<String>>(this) {
-            @Override
-            protected void showDialog() {
-
-            }
-
-            @Override
-            protected void hideDialog() {
-
-            }
-
-            @Override
-            protected void successful(BaseModel<String> stringBaseModel) {
-                orderList = stringBaseModel.getDatas();
-                ing.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            protected void defeated(BaseModel<String> stringBaseModel) {
-                ing.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(ExceptionHandle.ResponeThrowable e) {
-
-            }
-        });
+//        retrofitClient.selectIngOrderByUser(username, new BaseObserver<BaseModel<String>>(this) {
+//            @Override
+//            protected void showDialog() {
+//
+//            }
+//
+//            @Override
+//            protected void hideDialog() {
+//
+//            }
+//
+//            @Override
+//            protected void successful(BaseModel<String> stringBaseModel) {
+//                orderList = stringBaseModel.getDatas();
+//                ing.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            protected void defeated(BaseModel<String> stringBaseModel) {
+//                ing.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onError(ExceptionHandle.ResponeThrowable e) {
+//
+//            }
+//        });
     }
 
     @Override

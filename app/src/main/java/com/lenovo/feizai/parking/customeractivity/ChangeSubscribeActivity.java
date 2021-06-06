@@ -62,8 +62,6 @@ public class ChangeSubscribeActivity extends BaseActivity {
     TextView merchantname;
     @BindView(R.id.select_car)
     TextView select_car;
-    @BindView(R.id.ing)
-    TextView ing;
 
     private RetrofitClient retrofitClient;
     private int sSpace;
@@ -92,7 +90,6 @@ public class ChangeSubscribeActivity extends BaseActivity {
         sSpace = Integer.valueOf(order.getSpace());
         sCar = order.getCarLicense();
         select_car.setText(sCar);
-        ing.setVisibility(View.GONE);
 
         subscribe_table = new BaseRecyclerView<ParkingSpace, BaseViewHolder>(this, R.id.subscribe_table) {
             @Override
