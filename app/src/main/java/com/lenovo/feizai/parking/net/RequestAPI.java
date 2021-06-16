@@ -241,4 +241,3 @@ public interface RequestAPI {
     @POST("api/merchant/addchengmerchantinfo")
     Observable<BaseModel> addchengmerchantinfo(@Query("oldname") String oldname, @Query("merchant_str") String merchant_str, @Query("location_str") String location_str, @Query("rates_str") String rates_str, @Query("parkingnumber_str") String parkingnumber_str, @Part MultipartBody.Part[] license, @Part MultipartBody.Part[] image);
 }
-
