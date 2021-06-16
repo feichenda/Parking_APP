@@ -42,6 +42,8 @@ public class ClearingOrderFragment extends BaseFragment {
     TextView enddate;
     @BindView(R.id.QR_Code)
     ImageView QR_Code;
+    @BindView(R.id.duration_text)
+    TextView duration_text;
 
     private RetrofitClient client;
 
@@ -57,6 +59,7 @@ public class ClearingOrderFragment extends BaseFragment {
         String orderjson = bundle.getString("order");
         Order order = GsonUtil.GsonToBean(orderjson, Order.class);
         order = GsonUtil.GsonToBean(orderjson, Order.class);
+        duration_text.setText("停车时长");
         merchant.setText(order.getMerchantName());
         orderState.setText("订单已支付");
         orderNumber.setText(order.getOrderNumber());
